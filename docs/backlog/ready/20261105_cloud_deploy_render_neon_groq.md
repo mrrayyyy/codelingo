@@ -30,7 +30,7 @@ Should follow the Alembic ticket so the first hosted schema is migration-managed
 - [ ] Build `Dockerfile.cloud` in CI (add a job) instead of locally
 ### Accounts and secrets (owner)
 - [ ] `[user]` Create the Neon project; keep the connection string private
-- [ ] `[user]` Create a fine-grained GitHub token limited to `ray-dd1510/codelingo`, Actions: write
+- [ ] `[user]` Create a fine-grained GitHub token limited to `mrrayyyy/codelingo`, Actions: write
 - [ ] `[user]` Create the Render service from `render.yaml`; enter secrets in the Render dashboard
 - [ ] `[user]` Add `CODELINGO_URL` and `CODELINGO_API_KEY` as GitHub Actions secrets
 - [ ] `[user]` Optional: Groq API key in Render

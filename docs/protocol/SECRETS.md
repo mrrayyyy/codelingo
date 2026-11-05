@@ -1,6 +1,6 @@
 # Secrets and privacy
 
-**This repository is public** (`ray-dd1510/codelingo`, owner decision
+**This repository is public** (`mrrayyyy/codelingo`, owner decision
 2026-11-05). Everything committed — code, tickets, ledger entries, commit
 messages — is readable by anyone, permanently, even after deletion.
 

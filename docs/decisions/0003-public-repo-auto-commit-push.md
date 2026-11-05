@@ -10,7 +10,7 @@ extraction workflow must live on the default branch). The owner chose a public
 repository and wants agents to commit and push without asking.
 
 ## Decision
-- The repository is `ray-dd1510/codelingo`, public, default branch `main`.
+- The repository is `mrrayyyy/codelingo`, public, default branch `main`.
 - Agents commit after each meaningful step and push to `origin main` once the
   pre-push checks in [EXECUTION.md](../protocol/EXECUTION.md#pre-push-checks)
   pass.

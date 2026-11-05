@@ -34,7 +34,7 @@ date, the file and line. An entry without evidence cannot be re-checked and will
 be believed anyway.
 
 Qualify references: a commit is `codelingo <sha>`, a CI run is its full URL, an
-issue or PR is `ray-dd1510/codelingo#12`.
+issue or PR is `mrrayyyy/codelingo#12`.
 
 ## Anti-staleness
 

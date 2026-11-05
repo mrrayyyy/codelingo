@@ -21,7 +21,7 @@ Decisions taken with the owner on 2026-11-05 (question dialog):
 - Agents: Claude Code and Gemini/Antigravity.
 - Depth: "just enough" — protocol, backlog, ledger, ADRs, skill, link check and
   housekeeping; no hooks or command logger.
-- Repository: public `ray-dd1510/codelingo` on GitHub; agents commit and push
+- Repository: public `mrrayyyy/codelingo` on GitHub; agents commit and push
   automatically.
 - Priorities for the next 1–2 months: daily cloud use, workplace English
   practice, vocabulary/content quality. Skill focus: speaking, listening,
@@ -58,7 +58,7 @@ Decisions taken with the owner on 2026-11-05 (question dialog):
 ### Verification and publish
 - [x] Link check and housekeeping exit 0; backend tests and typecheck still pass
 - [x] CI step for the link check in `.github/workflows/ci.yml`
-- [x] `gh repo create ray-dd1510/codelingo --public --source . --push`
+- [x] `gh repo create mrrayyyy/codelingo --public --source . --push`
 
 ## Implementation Log
 - 2026-11-05 — Read AIOps protocol (`aiops/docs/protocol/*`), templates and
