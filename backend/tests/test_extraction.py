@@ -28,6 +28,7 @@ def test_markdown_skips_fences_and_sensitive_files():
     assert not list(snippets("Authentication requires a valid session", "node_modules/lib.ts"))
 
 
+# fake-secret-fixture: deliberate fake secrets for the filter tests below.
 @pytest.mark.parametrize("text", [
     "api_key = sk-abcdefghijklmnopqrstuv", "const permissions = (user) => { return user.permissions; }",
     "Xin chào bạn, đây là tài liệu xác thực người dùng.", "hello", "-----BEGIN RSA PRIVATE KEY-----",
@@ -54,6 +55,7 @@ def test_extraction_lemmatizes_and_ranks_original_context(sample: Path):
 
 
 def test_no_secrets_retained(tmp_path):
+    # fake-secret-fixture
     (tmp_path / "source.ts").write_text('// Authenticate the request using api_key=sk-abcdefghijklmnopqrstuv\n// Validate the session before retrieving protected resources.')
     words = extract_repository(tmp_path)
     assert words

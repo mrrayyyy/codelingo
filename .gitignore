@@ -16,3 +16,9 @@ node_modules/
 .DS_Store
 test-results/
 frontend/public/monaco/
+
+# Docs scratch space (see docs/tmp/README.md)
+docs/tmp/*
+!docs/tmp/README.md
+# Personal Claude Code settings
+.claude/settings.local.json

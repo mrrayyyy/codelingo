@@ -4,6 +4,10 @@ English practice from the source code you work with. A local-first, single-user 
 
 **Preferred deployment: cloud, no local Docker or models required.** Following the updated product decision, use [the free-tier cloud deployment guide](docs/cloud-deployment.vi.md): Render hosts the lightweight app, Neon stores learning data, GitHub Actions performs NLP on demand, and optional Groq APIs handle speech/writing. The original local/self-hosted profile below remains available for development.
 
+## Working on this repository
+
+This is a public repository maintained with Claude Code and Gemini/Antigravity. Work is tracked as docs-as-code: start with [AGENTS.md](AGENTS.md) and [docs/protocol/](docs/protocol/README.md). Tickets live in `docs/backlog/<status>/`, findings in `docs/ledger/`, decisions in [docs/decisions/](docs/decisions/README.md), and direction in [the roadmap](docs/product/roadmap.md).
+
 ## Design deliverables
 
 Read [the architecture review, Mermaid system diagram, ERD, and milestone plan](docs/architecture.md). The matching plugin contracts are in [TypeScript](shared/plugins.ts) and [Python](backend/app/contracts.py); [the dictation module](backend/app/plugins.py) is a fully worked generation/grading example.
@@ -107,7 +111,8 @@ backend/app/
 backend/tests/     extraction, archive, plugin, and end-to-end API tests
 frontend/          Next.js App Router, server-only API proxy, UI, browser tests
 shared/            TypeScript plugin contracts
-docs/              architecture, ERD, decisions, milestones
+docs/              architecture, protocol, backlog, ledger, decisions (ADRs), roadmap
+tools/docs/        link check, housekeeping, secret scan
 scripts/dev.py     local two-service launcher
 compose.yaml       PostgreSQL, Redis, API, worker, Next.js
 ```
