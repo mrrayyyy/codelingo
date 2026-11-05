@@ -1,0 +1,12 @@
+# Lightweight web runtime. Full NLP dependencies run only in GitHub Actions.
+-c requirements.lock
+fastapi==0.162.0
+uvicorn[standard]==0.54.0
+python-multipart==0.0.32
+SQLAlchemy==2.1.6
+psycopg[binary]==3.3.6
+arq==0.28.0
+httpx==0.28.1
+pydantic-settings==2.16.1
+fsrs==6.3.2
+genanki==0.13.1

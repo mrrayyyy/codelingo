@@ -1,0 +1,11 @@
+.git
+.venv
+.env
+.data
+**/node_modules
+**/.next
+**/__pycache__
+**/.pytest_cache
+**/*.tsbuildinfo
+frontend/public/monaco
+test-results
