@@ -8,27 +8,15 @@ severity: high
 owner: user
 ---
 
-# Importing employer code into the cloud profile may breach workplace policy
+# Import mã nguồn công ty vào cấu hình cloud có thể vi phạm chính sách bảo mật
 
-## Context & Evidence
-The point of CodeLingo is to learn from the code the owner works with, which is
-mostly employer-owned. In the cloud profile
-([ADR 0001](../../decisions/0001-cloud-first-free-tier.md)) an imported
-repository is downloaded by a GitHub Actions runner of a **public** repository
-(`.github/workflows/extract.yml`), its context sentences (comments, docstrings,
-strings with file paths and line numbers) are stored in Neon
-(`context_sentences` in `docs/architecture.md`), and practice text can be sent to
-Groq (`backend/app/adapters.py`). `scripts/cloud_extract.py` logs counts only,
-so nothing leaks through public Actions logs — but the data still leaves the
-employer's control. Established by reading those files, 2026-11-05.
+## Ngữ cảnh & Bằng chứng (Context & Evidence)
+Mục đích của CodeLingo là học tiếng Anh từ chính mã nguồn mà chủ dự án làm việc hàng ngày, phần lớn thuộc quyền sở hữu của công ty nơi làm việc. Trong cấu hình đám mây ([ADR 0001](../../decisions/0001-cloud-first-free-tier.md)), một repository được import sẽ được tải xuống bởi runner GitHub Actions của một repository **công khai** (`.github/workflows/extract.yml`), các câu ngữ cảnh (comment, docstrings, chuỗi string kèm theo đường dẫn file và số dòng) sẽ được lưu trữ trong database Neon (`context_sentences` trong `docs/architecture.md`), và nội dung luyện tập có thể được gửi tới API Groq (`backend/app/adapters.py`). Script `scripts/cloud_extract.py` chỉ in log số lượng thống kê nên không làm lộ nội dung qua log Actions công khai — nhưng dữ liệu vẫn bị đưa ra khỏi phạm vi kiểm soát của doanh nghiệp. Xác định khi đọc các file trên ngày 2026-11-05.
 
-## Recommended Action
-Owner decides one of:
-1. Import only public/own repositories in the cloud profile; use the local
-   profile (inline mode, no LLM) for work code.
-2. Check workplace policy and, if allowed, document which repositories are fine.
-3. Add a "paste prose only" import (commit messages, PR text the owner wrote)
-   that never uploads source.
+## Hành động khuyến nghị (Recommended Action)
+Chủ dự án xem xét và lựa chọn một trong các phương án:
+1. Chỉ import các kho mã nguồn công khai hoặc do cá nhân sở hữu trên cấu hình cloud; sử dụng cấu hình cục bộ (chế độ inline, không dùng LLM) cho mã nguồn công ty.
+2. Kiểm tra chính sách bảo mật của doanh nghiệp và nếu được phép, ghi chú rõ những repository nào được phép import.
+3. Bổ sung tính năng import "chỉ dán văn bản xuôi" (chỉ nhập commit message, nội dung PR do chính chủ dự án viết) mà không bao giờ tải lên toàn bộ mã nguồn.
 
-Until decided, [SECRETS.md](../../protocol/SECRETS.md) restricts agents to
-public repositories and the sample.
+Cho đến khi có quyết định chính thức, quy định tại [SECRETS.md](../../protocol/SECRETS.md) giới hạn các agent chỉ được import các repository công khai hoặc bộ mẫu đi kèm.

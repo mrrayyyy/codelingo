@@ -43,8 +43,8 @@ Yêu cầu trực tiếp từ chủ dự án:
 - [x] Cập nhật `docs/decisions/README.md`, `0000-template.md`, `0001-cloud-first-free-tier.md`, `0002-docs-as-code-workflow.md`, `0003-public-repo-auto-commit-push.md`.
 
 ### Nhóm 4: Chuyển đổi Backlog & Ledger
-- [ ] Cập nhật `docs/backlog/_TEMPLATE.md` và các ticket trong `ready/`, `open/`, `done/`.
-- [ ] Cập nhật `docs/ledger/_TEMPLATE.md` và các mục ledger trong `open/`.
+- [x] Cập nhật `docs/backlog/_TEMPLATE.md` và các ticket trong `ready/`, `open/`, `done/`.
+- [x] Cập nhật `docs/ledger/_TEMPLATE.md` và các mục ledger trong `open/`.
 
 ### Nhóm 5: Kiểm tra toàn diện & Hoàn tất
 - [ ] Chạy `check_doc_links.py` và `housekeeping.py`.
@@ -56,6 +56,7 @@ Yêu cầu trực tiếp từ chủ dự án:
 - 2026-11-05: Hoàn thành Nhóm 1: Cập nhật hợp đồng agent (`AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `frontend/AGENTS.md`) và kỹ năng quản lý tài liệu `SKILL.md` sang tiếng Việt cùng quy tắc giữ nguyên tên file/thư mục tiếng Anh.
 - 2026-11-05: Hoàn thành Nhóm 2: Chuyển đổi toàn bộ `README.md` và 8 tài liệu giao thức trong `docs/protocol/` sang tiếng Việt.
 - 2026-11-05: Hoàn thành Nhóm 3: Chuyển đổi toàn bộ tài liệu kiến trúc, lộ trình roadmap, bản ghi xác minh, runbooks và toàn bộ các ADR trong `docs/decisions/` sang tiếng Việt.
+- 2026-11-05: Hoàn thành Nhóm 4: Chuyển đổi toàn bộ templates, tickets (`ready/`, `open/`, `done/`) trong `docs/backlog/` và các mục trong `docs/ledger/` sang tiếng Việt, bảo toàn các header và trường metadata phục vụ tooling.
 
 ## Deviations
 None

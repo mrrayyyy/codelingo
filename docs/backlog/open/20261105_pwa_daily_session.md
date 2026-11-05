@@ -6,23 +6,18 @@ priority: P1
 opened: 2026-11-05
 ---
 
-# Installable PWA and a 10-minute daily session
+# PWA có thể cài đặt và phiên học 10 phút mỗi ngày (Installable PWA & 10-minute daily session)
 
-**Blocked by:** [cloud deploy](../ready/20261105_cloud_deploy_render_neon_groq.md)
-(needs the hosted URL and a measured cold-start time) and
-[split workspace UI](../ready/20261105_split_workspace_ui.md).
+**Blocked by:** [Triển khai cloud](../ready/20261105_cloud_deploy_render_neon_groq.md) (cần có URL đã triển khai và đo lường thời gian khởi động nguội thực tế) và [Tách nhỏ giao diện workspace UI](../ready/20261105_split_workspace_ui.md).
 
 ## Context
-Practice is spread over separate pages; a habit needs one button. Render's free
-tier spins down when idle, so the first open of the day can be slow. An
-installable PWA with a cached shell shows the session immediately and a clear
-"waking the server" state instead of a blank page.
+Các bài luyện tập hiện đang nằm rải rác ở các trang riêng biệt; để hình thành thói quen học hàng ngày cần có một nút bấm duy nhất. Gói miễn phí của Render sẽ tự động ngủ khi nhàn rỗi, khiến lần mở app đầu tiên trong ngày có thể bị chậm. Một ứng dụng PWA có thể cài đặt lên màn hình chính với vỏ tĩnh (static shell) được cache sẵn sẽ hiển thị màn hình học tập ngay lập tức kèm thông báo trạng thái "đang đánh thức server" rõ ràng thay vì một trang trắng đơ.
 
 ## Acceptance Criteria
-- [ ] Installable on iOS/Android home screen (manifest, icons, service worker for the static shell only — no learning data cached in the browser).
-- [ ] "Today" screen: due reviews (cap 15) → 1 listening item → 1 speaking item → summary, about 10 minutes.
-- [ ] Cold start shows progress text, not an error; retries until the API answers.
-- [ ] Dashboard shows per-skill minutes and attempts for the last 7 days.
+- [ ] Có thể cài đặt lên màn hình chính iOS/Android (manifest, icons, service worker chỉ cache vỏ tĩnh giao diện — không cache dữ liệu học tập trong trình duyệt).
+- [ ] Màn hình "Hôm nay" (Today): ôn tập các thẻ đến hạn (giới hạn tối đa 15 thẻ) → 1 bài tập nghe → 1 bài tập nói → màn hình tổng kết phiên học, kéo dài khoảng 10 phút.
+- [ ] Trạng thái khởi động nguội (cold start) hiển thị văn bản tiến trình rõ ràng, không báo lỗi; tự động retry cho đến khi API phản hồi.
+- [ ] Bảng điều khiển (dashboard) hiển thị số phút luyện tập và số lượt làm bài theo từng kỹ năng trong 7 ngày gần nhất.
 
 ## Implementation Log
 

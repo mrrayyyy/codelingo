@@ -7,28 +7,23 @@ skill: vocabulary
 opened: 2026-11-05
 ---
 
-# Vietnamese meanings, examples and better CEFR estimates
+# Bổ sung nghĩa tiếng Việt, câu ví dụ và cải thiện ước lượng cấp độ CEFR
 
 ## Context
-The bundled lexicon has 33 definitions (`backend/app/lexicon.py`, counted
-2026-11-05) and `vocab_items` has no Vietnamese field, so most flashcards show
-"definition unavailable". For a Vietnamese learner the review loop needs a short
-Vietnamese meaning, an English definition and a plain example. Unknown CEFR
-defaults to B2.
+Từ điển tích hợp sẵn hiện chỉ có 33 định nghĩa (`backend/app/lexicon.py`, đếm ngày 2026-11-05) và bảng `vocab_items` chưa có trường tiếng Việt nào, dẫn đến hầu hết flashcard đều hiển thị "definition unavailable" (chưa có định nghĩa). Đối với người học Việt Nam, vòng lặp ôn tập rất cần một giải nghĩa tiếng Việt ngắn gọn, một định nghĩa tiếng Anh dễ hiểu và một câu ví dụ mộc mạc. Các từ chưa rõ cấp độ CEFR hiện mặc định gán mức B2.
 
-Constraint from [VERIFICATION.md](../../protocol/VERIFICATION.md): generated
-content is labelled as AI-generated and never presented as dictionary fact.
+Ràng buộc từ [VERIFICATION.md](../../protocol/VERIFICATION.md): nội dung do AI sinh ra phải được dán nhãn rõ ràng là do AI sinh, tuyệt đối không bao giờ được trình bày như dữ kiện từ điển chính thống.
 
 ## Acceptance Criteria
-- [ ] Schema (via Alembic): `meaning_vi`, `definition_en`, `example`, `content_source` (`lexicon | dictionary | ai`), `content_checked` per vocab item.
-- [ ] Enrichment on demand and in batches through the configured LLM adapter, with a strict JSON schema; the word and its retained context only — never whole files.
-- [ ] UI labels AI content and lets the owner edit/approve it (`content_checked`).
-- [ ] CEFR estimate uses `wordfreq` Zipf bands for words outside the reviewed lexicon; marked estimated.
-- [ ] Offline/no-LLM mode unchanged: shows "unavailable", no invented text.
-- [ ] Tests with a fake LLM adapter covering valid, invalid and unavailable responses.
+- [ ] Schema database (thực hiện qua Alembic): bổ sung các cột `meaning_vi`, `definition_en`, `example`, `content_source` (`lexicon | dictionary | ai`), `content_checked` cho từng mục từ vựng.
+- [ ] Làm giàu dữ liệu theo yêu cầu đơn lẻ và theo lô thông qua adapter LLM được cấu hình, kèm JSON schema nghiêm ngặt; chỉ gửi từ vựng và câu ngữ cảnh ngắn đã lưu — tuyệt đối không gửi cả file mã nguồn.
+- [ ] Giao diện dán nhãn rõ ràng cho nội dung do AI sinh và cho phép chủ dự án chỉnh sửa / duyệt nội dung (`content_checked`).
+- [ ] Ước lượng CEFR sử dụng phân dải tần suất Zipf của thư viện `wordfreq` cho các từ nằm ngoài từ điển biên soạn sẵn; đánh dấu rõ là giá trị ước lượng.
+- [ ] Chế độ offline/không có LLM giữ nguyên cách hoạt động: hiển thị "chưa có thông tin", không tự bịa đặt câu chữ.
+- [ ] Kiểm thử tự động với adapter LLM giả lập bao gồm các trường hợp phản hồi hợp lệ, không hợp lệ và dịch vụ ngoại tuyến.
 
 ## Plan
-Write when picked up. Depends on the Alembic ticket for the schema change.
+Viết chi tiết khi bắt tay vào làm. Phụ thuộc vào ticket Alembic để thực hiện thay đổi schema.
 
 ## Implementation Log
 

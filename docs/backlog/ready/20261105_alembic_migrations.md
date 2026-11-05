@@ -6,35 +6,31 @@ priority: P1
 opened: 2026-11-05
 ---
 
-# Add Alembic schema migrations before hosted data exists
+# Tích hợp công cụ migration schema bằng Alembic trước khi có dữ liệu trên cloud
 
 ## Context
-The schema is created with SQLAlchemy `create_all` (README: "do not use it as a
-schema upgrade strategy"). Phase 2 adds columns (Vietnamese gloss, phrases). Once
-learning history lives in Neon, a schema change without migrations means manual
-SQL or data loss. Doing this before the first deploy keeps it `routine`; after,
-every migration is `irreversible`.
+Schema cơ sở dữ liệu hiện tại được khởi tạo bằng SQLAlchemy `create_all` (README đã lưu ý: "không dùng làm chiến lược nâng cấp schema"). Giai đoạn 2 của lộ trình sẽ thêm các cột dữ liệu mới (nghĩa tiếng Việt, cụm từ vựng). Một khi lịch sử học tập đã được lưu trữ trên Neon, việc thay đổi schema mà không có công cụ migration sẽ đồng nghĩa với việc phải chạy SQL thủ công hoặc đối mặt nguy cơ mất dữ liệu. Thực hiện việc này trước lần deploy đầu tiên giúp giữ rủi ro ở mức `routine`; sau khi đã deploy, mọi migration đều thuộc diện `irreversible`.
 
 ## Acceptance Criteria
-- [ ] `alembic upgrade head` creates the current schema on empty SQLite and PostgreSQL.
-- [ ] The baseline revision matches `create_all` (autogenerate shows no diff).
-- [ ] API startup runs migrations (or refuses to start on an out-of-date schema) in every job mode.
-- [ ] Tests run against the migrated schema; CI green.
-- [ ] README and architecture.md describe how to add a migration.
+- [ ] Lệnh `alembic upgrade head` khởi tạo schema hiện tại thành công trên cả SQLite trống và PostgreSQL trống.
+- [ ] Bản revision cơ sở khớp chính xác với `create_all` (autogenerate không sinh ra diff sai lệch).
+- [ ] Quá trình khởi động API tự động chạy migrations (hoặc từ chối khởi động nếu schema lỗi thời) trên mọi chế độ job.
+- [ ] Toàn bộ bộ test chạy trên schema đã được migrate; CI báo xanh.
+- [ ] README và architecture.md cập nhật hướng dẫn cách tạo và áp dụng migration mới.
 
 ## Plan
-### Setup
-- [ ] Add `alembic` to `backend/pyproject.toml` and regenerate `backend/requirements.lock`
-- [ ] `backend/alembic/` with `env.py` reading `settings.database_url` and `db.Base.metadata`
-- [ ] Baseline revision `0001_initial` from the current models in `backend/app/db.py`
-### Wire-up
-- [ ] Replace `create_all` in the API lifespan (`backend/app/main.py`) with an upgrade-to-head
-- [ ] Same for `scripts/cloud_start.py` and the Compose `api` service
-- [ ] `backend/tests/conftest.py` builds the test DB through migrations
-### Verify and document
-- [ ] Autogenerate against the baseline → empty diff
-- [ ] pytest, typecheck; CI run green (link the run)
-- [ ] Doc sync: README "Run without Docker", architecture.md note on migrations
+### Cài đặt ban đầu (Setup)
+- [ ] Thêm `alembic` vào `backend/pyproject.toml` và sinh lại `backend/requirements.lock`
+- [ ] Khởi tạo thư mục `backend/alembic/` với `env.py` đọc `settings.database_url` và `db.Base.metadata`
+- [ ] Tạo revision cơ sở `0001_initial` từ các model hiện tại trong `backend/app/db.py`
+### Kết nối vào hệ thống (Wire-up)
+- [ ] Thay thế lệnh `create_all` trong vòng đời API (`backend/app/main.py`) bằng lệnh nâng cấp lên head
+- [ ] Cập nhật tương tự cho `scripts/cloud_start.py` và dịch vụ `api` trong Compose
+- [ ] Cấu hình `backend/tests/conftest.py` khởi tạo DB test thông qua migration
+### Kiểm chứng và cập nhật tài liệu (Verify and document)
+- [ ] Chạy autogenerate so với bản cơ sở → diff rỗng (không có thay đổi thừa)
+- [ ] Chạy pytest, typecheck; bảo đảm CI báo xanh (dẫn link run)
+- [ ] Đồng bộ tài liệu: mục "Chạy trực tiếp không cần Docker" trong README, ghi chú về migration trong architecture.md
 
 ## Implementation Log
 

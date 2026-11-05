@@ -6,37 +6,32 @@ priority: P1
 opened: 2026-11-05
 ---
 
-# Split the workspace UI into per-page components
+# Tách nhỏ giao diện workspace UI thành các component theo từng trang
 
 ## Context
-`frontend/components/workspace.tsx` holds all six pages (dashboard, vocabulary,
-repositories, review, practice, settings) in one client component with 33
-`useState` hooks; several lines exceed 2,000 characters (measured 2026-11-05 with
-`awk 'length > 400'`). Every Phase 1–3 feature (daily session, PWA, speaking
-simulator, listening) adds screens here. Splitting first makes those changes
-reviewable and keeps regressions local.
+File `frontend/components/workspace.tsx` hiện đang gộp cả 6 trang (dashboard, từ vựng, repositories, ôn tập, bài tập, cài đặt) vào chung một client component duy nhất với 33 hooks `useState`; một số dòng dài vượt quá 2.000 ký tự (đo ngày 2026-11-05 bằng lệnh `awk 'length > 400'`). Mọi tính năng trong Giai đoạn 1–3 (phiên học hàng ngày, PWA, mô phỏng nói, luyện nghe) đều sẽ phải thêm màn hình tại đây. Tách nhỏ file này trước tiên sẽ giúp các thay đổi sau này dễ review hơn và cô lập phạm vi lỗi hồi quy (regression).
 
-No behaviour change is intended.
+Không có thay đổi nào về hành vi người dùng trong đợt tái cấu trúc này.
 
 ## Acceptance Criteria
-- [ ] One component per page under `frontend/components/pages/`, plus shared pieces (import dialog, word drawer, toast).
-- [ ] i18n strings out of inline `t(en, vi)` calls into a small dictionary module.
-- [ ] No source line over 160 characters in `frontend/components/`.
-- [ ] Playwright flow passes unchanged; screenshots of each page before/after look the same.
+- [ ] Mỗi trang là một component riêng nằm trong thư mục `frontend/components/pages/`, cùng các thành phần chia sẻ chung (hộp thoại import, drawer xem chi tiết từ, thông báo toast).
+- [ ] Tách các chuỗi đa ngôn ngữ (i18n) khỏi các lệnh inline `t(en, vi)` vào một module từ điển riêng biệt.
+- [ ] Không có dòng mã nguồn nào dài quá 160 ký tự trong thư mục `frontend/components/`.
+- [ ] Luồng test Playwright vượt qua bình thường mà không cần sửa code test; ảnh chụp màn hình từng trang trước/sau khi tách trông đồng nhất.
 
 ## Plan
-### Before
-- [ ] Read `frontend/node_modules/next/dist/docs/` sections on client components and routing for this Next.js version
-- [ ] Capture before-screenshots of all six pages (Playwright, `docs/tmp/`)
-### Split
-- [ ] Extract shared state/data loading into a hook (`frontend/lib/use-workspace.ts`)
-- [ ] Move each page into `frontend/components/pages/<page>.tsx`
-- [ ] Move dialogs/drawers into `frontend/components/`
-- [ ] Move strings into `frontend/lib/i18n.ts`
-### Verify
-- [ ] typecheck, build, `npm run test:e2e` against `scripts/dev.py`
-- [ ] After-screenshots compared with before
-- [ ] Decide whether pages become App Router routes (record in Deviations or a ledger idea)
+### Trước khi thực hiện (Before)
+- [ ] Đọc các mục tài liệu về client components và routing trong `frontend/node_modules/next/dist/docs/` của phiên bản Next.js này
+- [ ] Chụp ảnh màn hình trước khi sửa (before-screenshots) của cả 6 trang (sử dụng Playwright, lưu trong `docs/tmp/`)
+### Tách component (Split)
+- [ ] Tách state và logic tải dữ liệu dùng chung vào một custom hook (`frontend/lib/use-workspace.ts`)
+- [ ] Di chuyển từng trang vào `frontend/components/pages/<page>.tsx`
+- [ ] Di chuyển các dialog/drawer vào các file riêng trong `frontend/components/`
+- [ ] Di chuyển các chuỗi văn bản i18n vào `frontend/lib/i18n.ts`
+### Kiểm chứng (Verify)
+- [ ] Chạy typecheck, build, `npm run test:e2e` đối chiếu với ứng dụng chạy qua `scripts/dev.py`
+- [ ] So sánh ảnh chụp màn hình sau khi sửa với ảnh trước khi sửa
+- [ ] Đánh giá xem các trang có nên chuyển thành route riêng của App Router hay không (ghi vào mục Deviations hoặc tạo idea trong ledger)
 
 ## Implementation Log
 

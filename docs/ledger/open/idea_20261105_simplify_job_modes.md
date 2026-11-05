@@ -8,18 +8,12 @@ severity: normal
 owner: user
 ---
 
-# Consider dropping the ARQ/Redis job mode and the Compose profile
+# Cân nhắc loại bỏ chế độ job ARQ/Redis và cấu hình Compose
 
-## Context & Evidence
-`backend/app/config.py` defines `job_mode: Literal["inline", "arq",
-"github_actions"]`; `compose.yaml` runs PostgreSQL, Redis, API and worker;
-`Dockerfile.cloud` + `render.yaml` run the cloud profile. Each mode has its own
-dispatch path in `backend/app/main.py` (`dispatch`) and its own operational
-docs. The owner chose cloud-first (ADR 0001) and is the only user. Read
-2026-11-05.
+## Ngữ cảnh & Bằng chứng (Context & Evidence)
+File `backend/app/config.py` định nghĩa `job_mode: Literal["inline", "arq", "github_actions"]`; `compose.yaml` khởi chạy PostgreSQL, Redis, API và worker; `Dockerfile.cloud` + `render.yaml` phục vụ cấu hình triển khai trên cloud. Mỗi chế độ có luồng điều phối riêng trong hàm `dispatch` của `backend/app/main.py` và các tài liệu vận hành tương ứng. Chủ dự án đã chọn ưu tiên triển khai cloud (ADR 0001) và là người dùng duy nhất của hệ thống. Đọc và ghi nhận ngày 2026-11-05.
 
-## Recommended Action
-Owner decides whether to keep `arq` + Compose. If dropped: keep `inline` for
-dev/CI and `github_actions` for hosted; remove Redis/ARQ code, `compose.yaml`
-worker and docs sections; record as ADR 0004 superseding part of the original
-architecture. If kept: no action, cancel this entry with the reason.
+## Hành động khuyến nghị (Recommended Action)
+Chủ dự án xem xét quyết định có nên tiếp tục duy trì chế độ `arq` + Compose hay không.
+- Nếu bỏ: giữ `inline` cho môi trường dev/CI và `github_actions` cho môi trường cloud; xóa mã nguồn liên quan đến Redis/ARQ, worker trong `compose.yaml` và các phần tài liệu liên quan; ghi nhận thành ADR 0004 thay thế một phần kiến trúc ban đầu.
+- Nếu giữ: không cần hành động gì, chuyển mục này sang cancelled kèm theo lý do.

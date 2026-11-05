@@ -7,24 +7,20 @@ skill: reading
 opened: 2026-11-05
 ---
 
-# Learn workplace phrases, and use git history as a source
+# Học các cụm từ công sở và khai thác lịch sử commit git làm nguồn ngữ cảnh
 
 ## Context
-Vocabulary is deduplicated by `(lemma, part_of_speech)`, so the app teaches
-single words. Workplace English runs on multi-word chunks — "walk me through",
-"I'm blocked on", "ship it behind a flag", "let's take this offline". Commit
-messages and PR descriptions are the richest everyday source of such prose and
-are listed as remaining scope in the README ("git-log/PR extraction").
+Từ vựng hiện tại được khử trùng lặp theo bộ khóa `(lemma, part_of_speech)`, do đó ứng dụng chỉ đang dạy các từ đơn lẻ. Tiếng Anh công sở trong thực tế lại vận hành chủ yếu dựa trên các cụm từ (phrases / chunks) — ví dụ: "walk me through", "I'm blocked on", "ship it behind a flag", "let's take this offline". Commit message và mô tả Pull Request (PR) là nguồn văn bản xuôi phong phú nhất hàng ngày chứa những cụm từ này, và đã được liệt kê trong phạm vi còn lại của README ("trích xuất git-log/PR").
 
 ## Acceptance Criteria
-- [ ] Extraction keeps frequent noun chunks and verb-particle phrases (spaCy) alongside lemmas, ranked the same way.
-- [ ] A curated seed list of ~150 meeting/stand-up/code-review phrases with Vietnamese meaning, project-authored.
-- [ ] ZIP/GitHub imports with `.git` history (bounded: last N commits) contribute commit-message sentences as context.
-- [ ] Phrases appear in review and reading exercises; existing word behaviour unchanged.
-- [ ] Extraction tests with fixtures for phrases and commit messages.
+- [ ] Đường ống trích xuất giữ lại các cụm danh từ phổ biến và cụm động từ (verb-particle phrases) qua spaCy song song với từ gốc (lemma), được xếp hạng theo cùng cơ chế.
+- [ ] Tập dữ liệu mẫu ban đầu khoảng ~150 cụm từ thông dụng trong họp hành/standup/code-review kèm nghĩa tiếng Việt, do dự án tự biên soạn.
+- [ ] Các lượt import ZIP/GitHub có lịch sử `.git` (giới hạn: N commit gần nhất) đóng góp các câu trong commit message làm câu ngữ cảnh thực tế.
+- [ ] Các cụm từ xuất hiện bình thường trong các bài tập ôn tập và đọc hiểu; giữ nguyên cách hoạt động của các từ đơn hiện có.
+- [ ] Bổ sung các bài test trích xuất với dữ liệu mẫu (fixtures) cho cụm từ và commit message.
 
 ## Plan
-Write when picked up. Check archive limits in `backend/app/imports.py` before reading `.git`.
+Viết chi tiết khi bắt tay vào thực hiện. Kiểm tra giới hạn xử lý file nén trong `backend/app/imports.py` trước khi đọc thư mục `.git`.
 
 ## Implementation Log
 

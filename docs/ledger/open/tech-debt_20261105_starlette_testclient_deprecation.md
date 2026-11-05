@@ -8,16 +8,10 @@ severity: low
 owner: claude
 ---
 
-# Test client deprecation warning: httpx with starlette.testclient
+# Cảnh báo lỗi thời (deprecation) của test client: httpx với starlette.testclient
 
-## Context & Evidence
-`.venv/bin/python -m pytest backend/tests -q` on 2026-11-05 → `53 passed, 1
-warning`: `StarletteDeprecationWarning: Using httpx with starlette.testclient is
-deprecated; install httpx2 instead` (raised from `fastapi/testclient.py:1`).
-Harmless now; a future Starlette release may remove the path and break every API
-test at once.
+## Ngữ cảnh & Bằng chứng (Context & Evidence)
+Chạy lệnh `.venv/bin/python -m pytest backend/tests -q` vào ngày 2026-11-05 → `53 passed, 1 warning`: `StarletteDeprecationWarning: Using httpx with starlette.testclient is deprecated; install httpx2 instead` (phát sinh từ `fastapi/testclient.py:1`). Hiện tại cảnh báo này vô hại; nhưng một bản phát hành Starlette trong tương lai có thể loại bỏ hoàn toàn đường dẫn này và làm gãy toàn bộ các bài test API cùng một lúc.
 
-## Recommended Action
-Check the Starlette release notes for the replacement, pin or migrate in
-`backend/pyproject.toml` and `backend/requirements.lock`, confirm the warning is
-gone and tests still pass.
+## Hành động khuyến nghị (Recommended Action)
+Kiểm tra ghi chú phát hành (release notes) của Starlette để xem phương án thay thế chuẩn, ghim hoặc nâng cấp phiên bản trong `backend/pyproject.toml` và `backend/requirements.lock`, xác nhận cảnh báo biến mất và các bài test vẫn vượt qua bình thường.
