@@ -35,8 +35,8 @@ Yêu cầu trực tiếp từ chủ dự án:
 - [x] Cập nhật kỹ năng `.agents/skills/codelingo-doc-manager/SKILL.md`.
 
 ### Nhóm 2: Chuyển đổi bộ giao thức (Protocol) & README chính
-- [ ] Cập nhật `README.md`.
-- [ ] Cập nhật `docs/protocol/README.md`, `NAVIGATION.md`, `EXECUTION.md`, `KANBAN.md`, `LEDGER.md`, `DOC_SYNC.md`, `VERIFICATION.md`, `SECRETS.md`.
+- [x] Cập nhật `README.md`.
+- [x] Cập nhật `docs/protocol/README.md`, `NAVIGATION.md`, `EXECUTION.md`, `KANBAN.md`, `LEDGER.md`, `DOC_SYNC.md`, `VERIFICATION.md`, `SECRETS.md`.
 
 ### Nhóm 3: Chuyển đổi Kiến trúc, Sản phẩm, Runbooks & Quyết định (ADR)
 - [ ] Cập nhật `docs/architecture.md`, `docs/product/roadmap.md`, `docs/verification.md`, `docs/cloud-deployment.vi.md`, `docs/runbooks/housekeeping.md`, `docs/tmp/README.md`.
@@ -54,6 +54,7 @@ Yêu cầu trực tiếp từ chủ dự án:
 ## Implementation Log
 - 2026-11-05: Khởi tạo ticket chuyển đổi toàn bộ tài liệu sang tiếng Việt và thiết lập quy tắc ngôn ngữ.
 - 2026-11-05: Hoàn thành Nhóm 1: Cập nhật hợp đồng agent (`AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `frontend/AGENTS.md`) và kỹ năng quản lý tài liệu `SKILL.md` sang tiếng Việt cùng quy tắc giữ nguyên tên file/thư mục tiếng Anh.
+- 2026-11-05: Hoàn thành Nhóm 2: Chuyển đổi toàn bộ `README.md` và 8 tài liệu giao thức trong `docs/protocol/` sang tiếng Việt.
 
 ## Deviations
 None

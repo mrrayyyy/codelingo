@@ -1,43 +1,27 @@
-# Secrets and privacy
+# Bí mật và Quyền riêng tư (Secrets and privacy)
 
-**This repository is public** (`mrrayyyy/codelingo`, owner decision
-2026-11-05). Everything committed — code, tickets, ledger entries, commit
-messages — is readable by anyone, permanently, even after deletion.
+**Kho lưu trữ này là công khai (public)** (`mrrayyyy/codelingo`, quyết định của chủ dự án ngày 2026-11-05). Mọi thứ được commit — mã nguồn, ticket, các mục ledger, commit message — đều có thể được đọc bởi bất kỳ ai, vĩnh viễn, ngay cả sau khi đã bị xóa trong commit sau.
 
-## Never commit
+## Những điều tuyệt đối không bao giờ được commit
 
-- API keys, tokens, passwords, connection strings with credentials (`.env` is
-  git-ignored; keep it that way);
-- the hosted app URL together with anything that authenticates to it;
-- real vocabulary, context sentences or source snippets extracted from a
-  private or employer repository;
-- names of internal systems, hosts, customers or colleagues from the owner's
-  workplace — in tickets and ledger entries too. Describe them generically
-  ("a work repository").
+- API keys, tokens, mật khẩu, chuỗi kết nối chứa thông tin xác thực (`.env` đã được đưa vào git-ignore; luôn duy trì trạng thái này);
+- URL ứng dụng đã triển khai đi kèm với bất kỳ thông tin nào dùng để xác thực truy cập vào ứng dụng đó;
+- Từ vựng thực tế, các câu ngữ cảnh hoặc đoạn trích mã nguồn được bóc tách từ repository riêng tư hoặc kho mã nguồn của công ty nơi chủ dự án làm việc;
+- Tên các hệ thống nội bộ, tên host máy chủ, khách hàng hoặc tên đồng nghiệp tại nơi làm việc của chủ dự án — áp dụng cho cả ticket và các mục ledger. Luôn mô tả khái quát (ví dụ: "một repository công việc").
 
-Secrets live in `.env` locally and in Render / GitHub Actions secret settings
-when hosted. Changing hosted secrets is gated ([EXECUTION.md](EXECUTION.md)).
-Never print a secret value into chat, logs or files.
+Các khóa secret được lưu trong file `.env` ở môi trường cục bộ và trong phần cài đặt Secret của Render / GitHub Actions khi triển khai trên cloud. Việc thay đổi secret trên môi trường đám mây bắt buộc phải được phê duyệt trước ([EXECUTION.md](EXECUTION.md)). Tuyệt đối không bao giờ in giá trị secret ra màn hình chat, file log hay bất kỳ file nào.
 
-## Before every commit
+## Trước mỗi lần commit
 
 ```sh
-python3 tools/docs/scan_secrets.py                       # staged changes
-git diff origin/main..HEAD | python3 tools/docs/scan_secrets.py -   # anything already committed
+python3 tools/docs/scan_secrets.py                       # kiểm tra các thay đổi đã stage
+git diff origin/main..HEAD | python3 tools/docs/scan_secrets.py -   # kiểm tra các commit chưa push
 ```
 
-It prints matches and exits 1. Test fixtures that deliberately contain fake
-secrets carry the marker `fake-secret-fixture` on the same line or the line
-above so the scanner skips them; never use the marker on a real value.
+Lệnh quét sẽ in ra các kết quả khớp và trả về mã thoát exit 1 nếu phát hiện vi phạm. Các test fixture cố tình chứa mã khóa giả lập phải gắn kèm đánh dấu `fake-secret-fixture` trên cùng dòng hoặc dòng ngay phía trên để công cụ quét bỏ qua; tuyệt đối không gắn đánh dấu này cho các giá trị bí mật thực tế.
 
-If a real secret is ever pushed: rotate it first (the old value is compromised
-the moment it is public), then clean history as a gated action.
+Nếu một bí mật thực tế vô tình bị push lên kho lưu trữ: trước tiên phải thu hồi/xoay vòng (rotate) khóa đó ngay lập tức (giá trị cũ đã bị lộ ngay khoảnh khắc nó xuất hiện công khai), sau đó làm sạch lịch sử git dưới dạng một hành động cần phê duyệt (gated).
 
-## Employer code
+## Mã nguồn công ty / nơi làm việc (Employer code)
 
-The cloud profile sends imported repositories to GitHub Actions runners, stores
-context sentences in Neon, and can send exercise text to Groq. Importing code
-the owner does not own may break their employer's policy. Until the owner
-decides otherwise
-([ledger entry](../ledger/open/process-gap_20261105_employer_code_privacy.md)),
-agents import only public repositories or the bundled sample.
+Cấu hình triển khai trên cloud gửi repository được import tới các runner của GitHub Actions, lưu các câu ngữ cảnh vào Neon, và có thể gửi văn bản bài tập tới Groq. Việc import mã nguồn mà chủ dự án không sở hữu bản quyền có thể vi phạm chính sách bảo mật của doanh nghiệp. Cho đến khi chủ dự án có quyết định khác ([bản ghi ledger](../ledger/open/process-gap_20261105_employer_code_privacy.md)), các agent chỉ được phép import các kho mã nguồn công khai hoặc bộ mẫu đi kèm dự án.

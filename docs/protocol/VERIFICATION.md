@@ -1,40 +1,28 @@
-# Verification
+# Xác minh và kiểm chứng (Verification)
 
-## Do not guess
+## Không phỏng đoán (Do not guess)
 
-- Do not guess library APIs or configuration fields. Read the installed version's
-  docs or source (`frontend/node_modules/next/dist/docs/`, `.venv/lib/...`),
-  `--help`, or the error text. Next.js here is newer than most training data.
-- Do not guess hosted-service facts (free-tier limits, model names, pricing).
-  Check the provider's current docs and record the date.
-- When behaviour is uncertain, test it rather than reasoning about it.
+- Không phỏng đoán API thư viện hay các trường cấu hình. Hãy đọc tài liệu hoặc mã nguồn của chính phiên bản đang được cài đặt (`frontend/node_modules/next/dist/docs/`, `.venv/lib/...`), cờ trợ giúp `--help`, hoặc thông báo lỗi cụ thể. Phiên bản Next.js trong dự án này mới hơn hầu hết dữ liệu huấn luyện.
+- Không phỏng đoán các thông tin về dịch vụ đám mây (hạn mức gói miễn phí free-tier, tên model AI, biểu phí). Luôn kiểm tra tài liệu mới nhất của nhà cung cấp dịch vụ và ghi rõ ngày kiểm tra.
+- Khi hành vi của một đoạn mã chưa chắc chắn, hãy viết test để kiểm chứng thực tế thay vì chỉ suy luận trên lý thuyết.
 
-## Facts carry a date
+## Dữ kiện phải có ngày tháng (Facts carry a date)
 
-A claim someone would act on — a free-tier limit, a model name, a quota, whether
-the hosted app is deployed — records when it was last checked, e.g. *"verified
-2026-11-05"*. A fact you wrote yourself is not evidence; it needs a date like
-anyone else's.
+Bất kỳ tuyên bố nào có thể dẫn đến hành động thực thi — hạn mức free-tier, tên model, hạn ngạch quota, hoặc trạng thái triển khai của ứng dụng — đều phải ghi nhận thời điểm kiểm chứng gần nhất, ví dụ: *"đã xác minh 2026-11-05"*. Một khẳng định do chính bạn viết ra không được coi là bằng chứng; nó cần có ngày kiểm chứng cụ thể như mọi nguồn dữ liệu khác.
 
-## Learning claims are labelled
+## Phải dán nhãn rõ ràng cho các nhận định học tập (Learning claims are labelled)
 
-This app grades a person's English. Never present an estimate as a
-measurement:
+Ứng dụng này đánh giá khả năng tiếng Anh của người học. Tuyệt đối không bao giờ trình bày một ước lượng như một phép đo lường chính xác:
 
-- transcript agreement is not pronunciation scoring;
-- an LLM's feedback is labelled as an AI estimate;
-- an unknown definition is shown as unavailable, never invented;
-- estimated CEFR levels are marked as estimated.
+- Độ trùng khớp văn bản bóc tách từ giọng nói (transcript agreement) không phải là chấm điểm phát âm;
+- Nhận xét đánh giá từ LLM phải được dán nhãn rõ là ước lượng AI (AI estimate);
+- Một từ không rõ định nghĩa phải hiển thị là "chưa có thông tin" (unavailable), tuyệt đối không tự bịa ra;
+- Cấp độ CEFR ước tính phải được ghi rõ là giá trị ước lượng.
 
-A feature that blurs these is a `bug`, even if it looks better.
+Một tính năng làm lu mờ hoặc đánh đồng các khái niệm trên bị coi là một lỗi `bug`, kể cả khi giao diện trông có vẻ đẹp hơn.
 
-## Verifying a fix
+## Xác minh sửa lỗi (Verifying a fix)
 
-A change is not verified because a later run was green. Ask what else could
-produce that green: was the test exercising the changed path, did the fixture
-already contain the answer, is the check a proxy (a 200 status, a non-empty
-list) for the thing that matters? Prefer the direct test, and state plainly what
-a result does *not* establish.
+Một thay đổi chưa thể coi là đã được kiểm chứng chỉ vì lần chạy sau cho kết quả xanh (green/pass). Hãy tự hỏi điều gì khác có thể khiến bài test báo xanh: bài test có thực sự chạy qua đoạn mã vừa thay đổi không, dữ liệu mẫu (fixture) có chứa sẵn đáp án từ trước hay không, bài kiểm tra đó có chỉ là một chỉ số gián tiếp (status code 200, danh sách không rỗng) thay vì kiểm tra đúng bản chất vấn đề? Luôn ưu tiên bài kiểm tra trực diện, và nêu rõ ràng những gì mà kết quả kiểm tra *chưa* khẳng định được.
 
-For UI changes, a typecheck is not verification: run the app or the Playwright
-flow and look at the screen that changed.
+Đối với thay đổi trên giao diện UI, lệnh kiểm tra kiểu `typecheck` không được coi là đã xác minh: hãy chạy ứng dụng thực tế hoặc quy trình Playwright và quan sát trực tiếp màn hình vừa được thay đổi.

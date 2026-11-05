@@ -1,77 +1,53 @@
 # Kanban (`docs/backlog/`)
 
-The task board. Status is the **directory the file is in**; changing status
-means moving the file (`git mv`), so `git log --follow` shows when each
-transition happened.
+Bảng theo dõi tác vụ (task board). Trạng thái công việc chính là **thư mục chứa file**; thay đổi trạng thái đồng nghĩa với việc di chuyển file (`git mv`), nhờ đó lệnh `git log --follow` sẽ hiển thị lịch sử chính xác của từng lần chuyển đổi trạng thái.
 
 ```text
-open/         exists, but blocked — the blocker is named in the ticket
-ready/        no blocker, pickable
-in_progress/  being worked now
-done/         complete; the ticket is its own historical record
-cancel/       abandoned, with the reason inline
+open/         tác vụ đã có nhưng đang bị chặn (blocked) — nguyên nhân chặn được nêu rõ trong ticket
+ready/        không bị chặn, đã sẵn sàng để thực hiện
+in_progress/  đang được tiến hành xử lý
+done/         đã hoàn thành; ticket đóng vai trò như một bản ghi lịch sử
+cancel/       đã hủy bỏ, kèm theo lý do cụ thể ngay trong file
 ```
 
-`open/` → `ready/` → `in_progress/` → `done/`. A ticket never jumps from `open/`
-to `in_progress/`: whoever clears the blocker moves it to `ready/` first, which
-keeps "what is pickable now" answerable with one `ls`.
+Luồng chuyển đổi: `open/` → `ready/` → `in_progress/` → `done/`. Một ticket không bao giờ nhảy cóc trực tiếp từ `open/` sang `in_progress/`: người giải quyết nguyên nhân chặn phải chuyển ticket sang `ready/` trước tiên, giúp việc trả lời câu hỏi "hiện tại có thể làm gì" chỉ cần một lệnh `ls`.
 
-## When a ticket is needed
+## Quy tắc Ngôn ngữ & Đặt tên
+- **Tên file & Thư mục**: Bắt buộc giữ **100% bằng tiếng Anh** theo mẫu `YYYYMMDD_<slug>.md`. Thư mục trạng thái (`open/`, `ready/`, `in_progress/`, `done/`, `cancel/`) giữ nguyên tiếng Anh.
+- **Nội dung ticket**: Bắt buộc viết bằng **tiếng Việt**.
+- **Frontmatter & Tiêu đề chuẩn**: Các khóa metadata (`type:`, `owner:`, `stakes:`, `priority:`, `skill:`, `opened:`) và các tiêu đề chuẩn (`## Context`, `## Acceptance Criteria`, `## Plan`, `## Blast Radius`, `## Implementation Log`, `## Deviations`) giữ nguyên định dạng tiếng Anh để bảo đảm công cụ script phân tích (`tools/docs/housekeeping.py`) hoạt động chuẩn xác.
 
-Open a ticket for work that changes user-visible behaviour, touches more than one
-module, or will take more than about half an hour. Typos, one-line fixes and doc
-corrections need only a good commit message.
+## Khi nào cần tạo ticket
 
-## Fields
+Hãy mở một ticket cho bất kỳ công việc nào làm thay đổi hành vi hiển thị với người dùng, tác động tới nhiều hơn một module, hoặc dự kiến mất hơn 30 phút thực hiện. Các lỗi chính tả nhỏ, sửa một dòng code đơn giản hoặc sửa liên kết tài liệu chỉ cần một commit message rõ ràng là đủ.
 
-Files are named `YYYYMMDD_slug.md`. Start from
-[`_TEMPLATE.md`](../backlog/_TEMPLATE.md).
+## Các trường thông tin (Fields)
+
+Tên file đặt theo định dạng `YYYYMMDD_slug.md`. Tạo từ mẫu [`_TEMPLATE.md`](../backlog/_TEMPLATE.md).
 
 - `type: feature | content | refactor | infra | docs | investigation`
-- `owner: claude | user` — new tickets default to `claude`. `user` only when the
-  owner said they will do it (accounts, payments, anything needing their
-  browser login). Claude does not pick up or re-own a `user` ticket.
-- `stakes: routine | irreversible` — irreversible: hosted schema/data changes,
-  deploy configuration, secrets, anything deleting learning data. Self-upgrade
-  mid-flight if the work turns out bigger.
-- `priority: P1 | P2 | P3` — P1 is the current roadmap phase in
-  [docs/product/roadmap.md](../product/roadmap.md).
-- `skill:` optional — `speaking | listening | reading | writing | vocabulary` for
-  product tickets, so progress per learning skill is visible.
+- `owner: claude | user` — mặc định cho ticket mới là `claude`. Chỉ gán `user` khi chủ dự án xác nhận sẽ tự thực hiện (tài khoản, thanh toán, việc yêu cầu đăng nhập trình duyệt cá nhân). Claude/agent không tự ý nhận hoặc đổi quyền sở hữu một ticket thuộc về `user`.
+- `stakes: routine | irreversible` — mức độ rủi ro: `irreversible` (không thể hoàn tác) dành cho thay đổi schema/dữ liệu database trên cloud, cấu hình triển khai, khóa secret, hoặc việc xóa dữ liệu học tập. Tự động nâng cấp mức này nếu công việc phát sinh phức tạp hơn dự tính.
+- `priority: P1 | P2 | P3` — P1 là giai đoạn hiện tại trong lộ trình phát triển [docs/product/roadmap.md](../product/roadmap.md).
+- `skill:` tùy chọn — `speaking | listening | reading | writing | vocabulary` dành cho các ticket sản phẩm, giúp theo dõi trực quan tiến độ của từng kỹ năng ngôn ngữ.
 
-## Lifecycle
+## Vòng đời xử lý ticket (Lifecycle)
 
-1. **Becoming pickable** — the blocker clears; move to `ready/`.
-2. **Starting** — move to `in_progress/`. Write `## Plan` first if missing, as a
-   [detailed checklist](#the-plan-is-a-detailed-checklist).
-3. **Tracking** — append to `## Implementation Log` after each meaningful step.
-   A ticket in `in_progress/` with a stale log is a violation: sessions run out
-   of context mid-task, and a summary saved for the end is a summary lost.
-4. **Closing** — append `## Deviations`; file anything unresolved to
-   `docs/ledger/open/` citing this ticket; update docs the work invalidated
-   ([DOC_SYNC.md](DOC_SYNC.md)); move to `done/`.
+1. **Sẵn sàng thực hiện (Becoming pickable)** — nguyên nhân chặn được giải quyết; chuyển file sang `ready/`.
+2. **Bắt đầu thực hiện (Starting)** — chuyển file sang `in_progress/`. Viết mục `## Plan` trước nếu chưa có, dưới dạng một [checklist chi tiết](#ke-hoach-la-mot-checklist-chi-tiet).
+3. **Theo dõi tiến độ (Tracking)** — ghi thêm nội dung vào `## Implementation Log` sau mỗi bước làm việc có ý nghĩa. Một ticket nằm trong `in_progress/` với log trống hoặc cũ kỹ là vi phạm quy chuẩn: các phiên làm việc có thể hết ngữ cảnh giữa chừng, và việc dồn tóm tắt để viết vào cuối cùng thường dẫn đến mất mát thông tin.
+4. **Đóng ticket (Closing)** — ghi rõ mục `## Deviations` (hoặc ghi "None"); ghi nhận các tồn đọng chưa xử lý vào `docs/ledger/open/` kèm dẫn chứng từ ticket này; cập nhật các tài liệu bị ảnh hưởng ([DOC_SYNC.md](DOC_SYNC.md)); chuyển file sang `done/`.
 
-Keep at most **two** tickets in `in_progress/` at once. Personal projects stall
-from too much started work, not too little.
+Luôn duy trì tối đa **hai** ticket trong `in_progress/` cùng một lúc. Các dự án cá nhân thường bị đình trệ vì mở quá nhiều việc cùng lúc, chứ không phải vì làm quá ít.
 
-## The plan is a detailed checklist
+## Kế hoạch là một checklist chi tiết
 
-Each item is one action with one checkable result, names where it happens (file,
-module, service), is marked **`[gate]`** when it needs confirmation under
-[EXECUTION.md](EXECUTION.md) and **`[user]`** when only the owner can do it, and
-is ticked `[x]` in the same turn it is done with a pointer to the evidence
-(commit, test output). New work discovered mid-ticket is added as an item, not
-done silently.
+Mỗi mục trong kế hoạch là một hành động cụ thể với một kết quả có thể kiểm tra độc lập, nêu rõ vị trí thực hiện (file, module, dịch vụ), được đánh dấu **`[gate]`** khi cần sự phê duyệt theo [EXECUTION.md](EXECUTION.md) và **`[user]`** khi chỉ có chủ dự án mới có thể làm, đồng thời được đánh dấu `[x]` ngay trong lượt hoàn thành kèm theo bằng chứng cụ thể (commit hash, output của test). Những công việc phát sinh ngoài dự kiến phải được bổ sung thành mục mới trong checklist, không được âm thầm làm.
 
-## Commit at creation and at resolution
+## Commit tại thời điểm tạo và thời điểm hoàn tất
 
-Commit a ticket the moment it is created and again when it moves to `done/` or
-`cancel/` — stage that ticket's files (plus the ledger entries it graduated from
-or filed) explicitly. Status is the directory, and git history is the only
-record of when it changed; an uncommitted ticket has neither.
+Commit ticket ngay khoảnh khắc nó được tạo và một lần nữa khi nó chuyển sang `done/` hoặc `cancel/` — chỉ định rõ ràng đường dẫn file của ticket đó (kèm theo các mục ledger tương ứng). Trạng thái công việc chính là thư mục, và lịch sử git là bản ghi duy nhất lưu lại mốc thời gian chuyển trạng thái; một ticket chưa được commit sẽ không có cả hai điều trên.
 
-## Relationship to the ledger
+## Mối liên hệ với Sổ nhật ký (Ledger)
 
-The [ledger](LEDGER.md) holds things *noticed*; the backlog holds things
-*decided*. A ledger item graduates when someone decides to work it, and moves to
-`ledger/resolved/` the moment the ticket exists.
+[Sổ nhật ký (Ledger)](LEDGER.md) lưu trữ những thứ *được phát hiện*; backlog lưu trữ những việc *đã quyết định làm*. Một mục trong ledger sẽ được "tốt nghiệp" khi có người quyết định bắt tay vào làm, và chuyển sang `ledger/resolved/` ngay tại thời điểm ticket tương ứng được tạo ra.
