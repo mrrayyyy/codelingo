@@ -7,3 +7,10 @@ This version has breaking changes — APIs, conventions, and file structure may 
 This block is written and re-added by `next dev` — verify at `node_modules/next/dist/server/lib/generate-agent-files.js`. Removing it from a diff only re-creates the uncommitted change; committing it with your work keeps the tree clean.
 
 <!-- END:nextjs-agent-rules -->
+
+## Hướng dẫn cho Frontend (Frontend Agent Instructions)
+- Đọc tài liệu trong `node_modules/next/dist/docs/` trước khi viết code cho Next.js để tránh các lỗi API không tương thích.
+- Tuân thủ quy tắc ngôn ngữ chung của dự án:
+  - Tài liệu, ghi chú hướng dẫn viết bằng **tiếng Việt**.
+  - Tên file, component, route, hook và thư mục bắt buộc giữ nguyên bằng **tiếng Anh**.
+  - Code, TypeScript types, comment kỹ thuật và git commit giữ nguyên tiếng Anh.

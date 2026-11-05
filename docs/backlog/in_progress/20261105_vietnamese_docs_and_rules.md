@@ -30,9 +30,9 @@ Yêu cầu trực tiếp từ chủ dự án:
 ## Plan
 
 ### Nhóm 1: Mở ticket & Cập nhật quy tắc cốt lõi (Rules & Entrypoints)
-- [ ] Tạo ticket và chuyển sang `in_progress/`.
-- [ ] Cập nhật quy tắc vào `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `frontend/AGENTS.md`.
-- [ ] Cập nhật kỹ năng `.agents/skills/codelingo-doc-manager/SKILL.md`.
+- [x] Tạo ticket và chuyển sang `in_progress/`.
+- [x] Cập nhật quy tắc vào `AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `frontend/AGENTS.md`.
+- [x] Cập nhật kỹ năng `.agents/skills/codelingo-doc-manager/SKILL.md`.
 
 ### Nhóm 2: Chuyển đổi bộ giao thức (Protocol) & README chính
 - [ ] Cập nhật `README.md`.
@@ -53,6 +53,7 @@ Yêu cầu trực tiếp từ chủ dự án:
 
 ## Implementation Log
 - 2026-11-05: Khởi tạo ticket chuyển đổi toàn bộ tài liệu sang tiếng Việt và thiết lập quy tắc ngôn ngữ.
+- 2026-11-05: Hoàn thành Nhóm 1: Cập nhật hợp đồng agent (`AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `frontend/AGENTS.md`) và kỹ năng quản lý tài liệu `SKILL.md` sang tiếng Việt cùng quy tắc giữ nguyên tên file/thư mục tiếng Anh.
 
 ## Deviations
 None

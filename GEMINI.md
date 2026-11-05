@@ -1,21 +1,15 @@
-# Gemini / Antigravity — entry point
+# Gemini / Antigravity — Điểm vào (Entry point)
 
-This file holds **no rules**. Read [AGENTS.md](AGENTS.md) — the shared contract —
-and then [docs/protocol/](docs/protocol/README.md), where every binding rule
-lives, so every agent follows the same ones.
+File này **không chứa quy tắc riêng**. Hãy đọc [AGENTS.md](AGENTS.md) — hợp đồng chia sẻ chung — và sau đó là [docs/protocol/](docs/protocol/README.md), nơi lưu trữ mọi quy tắc ràng buộc, để mọi agent đều tuân thủ các quy tắc thống nhất.
 
-Before any ticket, ledger, ADR or housekeeping action, read
-[.agents/skills/codelingo-doc-manager/SKILL.md](.agents/skills/codelingo-doc-manager/SKILL.md)
-in full and follow it.
+Trước khi thực hiện bất kỳ thao tác nào với ticket, ledger, ADR hoặc dọn dẹp hệ thống, hãy đọc kỹ toàn bộ hướng dẫn tại [.agents/skills/codelingo-doc-manager/SKILL.md](.agents/skills/codelingo-doc-manager/SKILL.md) và làm theo.
 
-Minimum before doing anything:
+Quy định tối thiểu trước khi thực hiện bất cứ thao tác nào:
 
-- [NAVIGATION.md](docs/protocol/NAVIGATION.md) — where every fact lives.
-- [EXECUTION.md](docs/protocol/EXECUTION.md) — what is autonomous, what is gated,
-  commit and push policy.
-- [SECRETS.md](docs/protocol/SECRETS.md) — this repository is public.
-- [KANBAN.md](docs/protocol/KANBAN.md) and [LEDGER.md](docs/protocol/LEDGER.md) —
-  file findings in the turn you notice them.
+- [NAVIGATION.md](docs/protocol/NAVIGATION.md) — nơi lưu trữ từng nhóm thông tin/dữ kiện.
+- [EXECUTION.md](docs/protocol/EXECUTION.md) — các hành động tự động hóa vs cần phê duyệt (gated), chính sách commit và push.
+- [SECRETS.md](docs/protocol/SECRETS.md) — kho lưu trữ này là công khai (public).
+- [KANBAN.md](docs/protocol/KANBAN.md) và [LEDGER.md](docs/protocol/LEDGER.md) — ghi nhận các phát hiện ngay trong lượt nhận ra chúng.
+- **Quy tắc ngôn ngữ & Đặt tên**: Nội dung tài liệu (`docs/`, `README.md`, tickets...) viết bằng tiếng Việt; tên file và thư mục luôn giữ nguyên bằng tiếng Anh.
 
-If a rule costs time or blocks legitimate work, file `type: protocol-friction`
-in `docs/ledger/open/` rather than working around it silently.
+Nếu một quy tắc làm tốn thời gian hoặc cản trở công việc chính đáng, hãy tạo một mục `type: protocol-friction` trong `docs/ledger/open/` thay vì âm thầm lách quy tắc.
