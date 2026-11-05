@@ -5,7 +5,7 @@ Run from anywhere after moving or deleting a ticket, ledger entry or document:
     python3 tools/docs/check_doc_links.py              # exit 1 when a dead link remains
     python3 tools/docs/check_doc_links.py --fix-moves  # repair links whose target moved to exactly one other place
 
-Scanned: docs/**/*.md (docs/tmp excluded), the root *.md files, and .agents/**/*.md.
+Scanned: docs/**/*.md (docs/tam and docs/tmp excluded), the root *.md files, and .agents/**/*.md.
 Ignored: fenced and inline code, http(s)/mailto links, anchors-only links.
 Adapted from the AIOps workspace's checker (2026-11-05).
 """
@@ -15,7 +15,7 @@ import re
 import sys
 
 ROOT = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", ".."))
-TMP = os.path.join(ROOT, "docs", "tmp") + os.sep
+TMP = (os.path.join(ROOT, "docs", "tam") + os.sep, os.path.join(ROOT, "docs", "tmp") + os.sep)
 LINK = re.compile(r"\]\(([^)#\s]+)(#[^)]*)?\)")
 
 
@@ -23,7 +23,7 @@ def files():
     found = set(glob.glob(os.path.join(ROOT, "docs", "**", "*.md"), recursive=True))
     found |= set(glob.glob(os.path.join(ROOT, "*.md")))
     found |= set(glob.glob(os.path.join(ROOT, ".agents", "**", "*.md"), recursive=True))
-    return sorted(f for f in found if not f.startswith(TMP))
+    return sorted(f for f in found if not any(f.startswith(p) for p in TMP))
 
 
 def prose(text):
@@ -50,27 +50,37 @@ def fix_moves(dead):
     by_name = {}
     for f in files():
         by_name.setdefault(os.path.basename(f), []).append(f)
-    for rel, target in dead:
-        candidates = by_name.get(os.path.basename(target), [])
+
+    repaired = 0
+    for doc, target in dead:
+        name = os.path.basename(target)
+        candidates = by_name.get(name, [])
         if len(candidates) != 1:
             continue
-        f = os.path.join(ROOT, rel)
-        new = os.path.relpath(candidates[0], os.path.dirname(f)).replace(os.sep, "/")
-        with open(f, encoding="utf-8") as handle:
-            src = handle.read()
-        out = src.replace(f"]({target})", f"]({new})").replace(f"]({target}#", f"]({new}#")
-        if out != src:
-            with open(f, "w", encoding="utf-8") as handle:
-                handle.write(out)
-            print(f"fixed  {rel}: {target} -> {new}")
+        new_target = os.path.relpath(candidates[0], os.path.dirname(os.path.join(ROOT, doc)))
+        new_target = new_target.replace(os.sep, "/")
+        with open(os.path.join(ROOT, doc), "r", encoding="utf-8") as handle:
+            content = handle.read()
+        pattern = re.compile(rf"\]\({re.escape(target)}(#[^)]*)?\)")
+        content = pattern.sub(rf"]({new_target}\1)", content)
+        with open(os.path.join(ROOT, doc), "w", encoding="utf-8") as handle:
+            handle.write(content)
+        repaired += 1
+    return repaired
+
+
+def main():
+    fix = "--fix-moves" in sys.argv
+    dead = scan()
+    if fix and dead:
+        repaired = fix_moves(dead)
+        print(f"Repaired {repaired} dead link(s)")
+        dead = scan()
+    for doc, target in dead:
+        print(f"DEAD {doc} -> {target}")
+    print(f"{len(dead)} dead link(s) in {len(files())} file(s)")
+    return 1 if dead else 0
 
 
 if __name__ == "__main__":
-    dead = scan()
-    if "--fix-moves" in sys.argv and dead:
-        fix_moves(dead)
-        dead = scan()
-    for rel, target in dead:
-        print(f"DEAD  {rel} -> {target}")
-    print(f"{len(dead)} dead link(s) in {len(files())} file(s)")
-    sys.exit(1 if dead else 0)
+    sys.exit(main())

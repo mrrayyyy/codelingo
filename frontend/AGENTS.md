@@ -8,9 +8,10 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 
 <!-- END:nextjs-agent-rules -->
 
-## Hướng dẫn cho Frontend (Frontend Agent Instructions)
+## Hướng dẫn cho Frontend
 - Đọc tài liệu trong `node_modules/next/dist/docs/` trước khi viết code cho Next.js để tránh các lỗi API không tương thích.
 - Tuân thủ quy tắc ngôn ngữ chung của dự án:
   - Tài liệu, ghi chú hướng dẫn viết bằng **tiếng Việt**.
-  - Tên file, component, route, hook và thư mục bắt buộc giữ nguyên bằng **tiếng Anh**.
+  - Tên thư mục dùng tiếng Việt không dấu snake_case trong `docs/`.
+  - Tên file, component, route, hook và thư mục mã nguồn giữ nguyên bằng **tiếng Anh**.
   - Code, TypeScript types, comment kỹ thuật và git commit giữ nguyên tiếng Anh.

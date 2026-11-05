@@ -17,7 +17,9 @@ node_modules/
 test-results/
 frontend/public/monaco/
 
-# Docs scratch space (see docs/tmp/README.md)
+# Docs scratch space (see docs/tam/README.md)
+docs/tam/*
+!docs/tam/README.md
 docs/tmp/*
 !docs/tmp/README.md
 # Personal Claude Code settings
