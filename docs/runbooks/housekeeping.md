@@ -1,39 +1,29 @@
-# Housekeeping
+# Dọn dẹp và Kiểm tra hệ thống (Housekeeping)
 
-A repeatable audit of the ledger and the backlog. **Run when asked**, or at the
-start of a session that has not touched the repo for a week.
+Quy trình kiểm toán lặp lại định kỳ dành cho sổ nhật ký (ledger) và bảng tác vụ (backlog). **Chạy khi được yêu cầu**, hoặc tại thời điểm bắt đầu một phiên làm việc khi kho lưu trữ đã không được đụng tới trong hơn một tuần.
 
 ```sh
-python3 tools/docs/housekeeping.py              # exit 1 when something needs a decision
+python3 tools/docs/housekeeping.py              # trả về mã thoát exit 1 khi có mục cần quyết định
 python3 tools/docs/housekeeping.py --stale-days 5
 ```
 
-It reports, grouped:
+Lệnh sẽ báo cáo theo các nhóm vấn đề:
 
-1. **Ledger past `next_review`, or missing it.** The field is the only thing
-   between the ledger and a pile nobody reads.
-2. **Backlog gone quiet** — `in_progress/` tickets untouched for more than the
-   stale window, with an empty `## Implementation Log`, never committed, or more
-   than two in progress at once; `open/` tickets that name no blocker.
-3. **Closed tickets with deviations** no ledger entry cites — check whether any
-   deviation left something unresolved.
-4. **Open protocol friction** — needs a decision, not a new date.
-5. **Unreferenced protocol docs** — a rule nothing links to is a rule nothing
-   follows.
-6. **Dead relative links** (via `tools/docs/check_doc_links.py`).
+1. **Các mục Ledger quá hạn `next_review`, hoặc thiếu trường này.** Trường thông tin này là rào cản duy nhất ngăn ledger biến thành một đống tài liệu không ai đọc.
+2. **Backlog bị đình trệ** — các ticket trong `in_progress/` không có thay đổi vượt quá khoảng thời gian cấu hình, hoặc có phần `## Implementation Log` trống, hoặc chưa từng được commit, hoặc có nhiều hơn 2 ticket cùng chạy một lúc; các ticket trong `open/` không nêu rõ nguyên nhân bị chặn (blocker).
+3. **Các ticket đã đóng có phần sai lệch (deviations)** mà không có mục ledger nào trích dẫn — kiểm tra xem có phát sinh tồn đọng nào chưa được xử lý hay không.
+4. **Quy tắc gây vướng (protocol friction) đang mở** — cần một quyết định dứt khoát từ chủ dự án, không phải là gia hạn ngày mới.
+5. **Tài liệu giao thức không được tham chiếu** — một quy tắc không có tài liệu nào liên kết tới là một quy tắc không ai tuân theo.
+6. **Các liên kết tương đối bị hỏng (dead links)** (thông qua `tools/docs/check_doc_links.py`).
 
-## What to do with the output
+## Cần làm gì với kết quả đầu ra
 
-The script never resolves, re-dates or deletes anything. Report the findings to
-the owner as a grouped list and let them decide per item: work it (graduate to a
-ticket), re-date it with a reason, or cancel it with a reason. Do not write a
-report file — a report nobody asked for becomes another stale document.
+Script kiểm tra không bao giờ tự ý đánh dấu hoàn thành, tự đổi ngày hay xóa bỏ bất kỳ mục nào. Hãy báo cáo các phát hiện cho chủ dự án theo danh sách phân nhóm và để chủ dự án quyết định cho từng mục: bắt tay vào làm (tốt nghiệp thành ticket), dời ngày kèm theo lý do, hoặc hủy bỏ kèm theo lý do. Không tạo thêm file báo cáo riêng — một bản báo cáo không ai yêu cầu sẽ chỉ nhanh chóng trở thành một tài liệu cũ kỹ khác.
 
-## After moving any ticket or ledger entry
+## Sau khi di chuyển bất kỳ ticket hay mục ledger nào
 
 ```sh
 python3 tools/docs/check_doc_links.py --fix-moves
 ```
 
-Moving a file silently breaks every relative link into it; markdown gives no
-error.
+Việc di chuyển file sẽ âm thầm làm gãy các liên kết tương đối trỏ tới nó; markdown sẽ không cảnh báo lỗi nếu không được kiểm tra.

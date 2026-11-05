@@ -1,17 +1,17 @@
-# NNNN. Title
+# NNNN. Tiêu đề quyết định (Title)
 
-- Status: proposed | accepted | superseded by NNNN
-- Date: YYYY-MM-DD
-- Decided by: owner | owner with Claude | …
+- Trạng thái: proposed | accepted | superseded by NNNN
+- Ngày: YYYY-MM-DD
+- Người quyết định: chủ dự án | chủ dự án cùng agent | …
 
-## Context
-The forces at play: what problem, which constraints, what was known then.
+## Ngữ cảnh (Context)
+Các yếu tố tác động: vấn đề cần giải quyết là gì, các ràng buộc kỹ thuật, thông tin đã biết tại thời điểm đó.
 
-## Decision
-What was decided, stated so it can be checked against the code.
+## Quyết định (Decision)
+Nội dung cụ thể được thông qua, trình bày rõ ràng để có thể đối chiếu trực tiếp với mã nguồn.
 
-## Alternatives considered
-Each option and why it lost.
+## Các phương án thay thế đã xem xét (Alternatives considered)
+Từng phương án và lý do vì sao phương án đó không được chọn.
 
-## Consequences
-What becomes easier, what becomes harder, what must now be true.
+## Hệ quả (Consequences)
+Điều gì trở nên thuận lợi hơn, điều gì trở nên thách thức hơn, và điều kiện nào bắt buộc phải duy trì.

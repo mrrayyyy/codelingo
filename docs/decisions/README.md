@@ -1,33 +1,31 @@
-# Decisions (ADRs)
+# Bản ghi Quyết định Kiến trúc (ADRs)
 
-The record of *why* — decisions behind the current shape of CodeLingo, kept apart
-from [architecture.md](../architecture.md), which records *what exists*.
+Nơi ghi lại câu trả lời cho câu hỏi *tại sao* — những quyết định đằng sau hình thái và cấu trúc hiện tại của CodeLingo, tách biệt với [architecture.md](../architecture.md) (nơi ghi nhận *hệ thống hiện có những gì*).
 
-Consult the relevant ADRs before proposing a change to deployment, data model,
-privacy boundaries, or the working protocol. The goal is to never re-litigate a
-settled decision and never silently contradict one.
+Tham khảo các ADR liên quan trước khi đề xuất thay đổi về triển khai, mô hình dữ liệu, ranh giới quyền riêng tư hoặc giao thức làm việc. Mục tiêu là không bao giờ phải bàn cãi lại một quyết định đã chốt và không âm thầm vi phạm quyết định đó.
 
-## When to write one
+## Khi nào cần viết một ADR
 
-When a decision is non-obvious, was debated, or would surprise a new reader —
-"why GitHub Actions does NLP instead of a worker", "why the repo is public".
-Routine changes belong in a ticket and a commit message.
+Khi một quyết định không hiển nhiên, từng có tranh luận, hoặc có thể gây bất ngờ cho người đọc mới — ví dụ: "tại sao GitHub Actions lại đảm nhận NLP thay vì worker thường trực", "tại sao repository này lại để chế độ công khai (public)". Các thay đổi thông thường thuộc về ticket và commit message.
 
-## Format
+## Quy tắc Ngôn ngữ & Đặt tên
+- **Tên file & Thư mục**: Bắt buộc giữ **100% bằng tiếng Anh** theo mẫu `NNNN-short-title.md` (ví dụ: `0001-cloud-first-free-tier.md`).
+- **Nội dung ADR**: Bắt buộc viết bằng **tiếng Việt**.
 
-One file per decision, `NNNN-short-title.md`, numbered sequentially. Copy
-[0000-template.md](0000-template.md).
+## Định dạng (Format)
 
-## Status values
+Mỗi quyết định là một file riêng, đặt tên `NNNN-short-title.md`, đánh số thứ tự liên tiếp. Sao chép từ mẫu [0000-template.md](0000-template.md).
 
-- `proposed` — under consideration
-- `accepted` — decided and reflected in the code
-- `superseded by NNNN` — replaced; keep the old file
+## Các trạng thái (Status values)
 
-## Index
+- `proposed` — đang được xem xét, thảo luận
+- `accepted` — đã được thông qua và áp dụng vào mã nguồn
+- `superseded by NNNN` — đã bị thay thế bởi quyết định số NNNN; vẫn giữ lại file cũ để lưu vết lịch sử
 
-| ADR | Status | Decision |
+## Bảng chỉ mục (Index)
+
+| ADR | Trạng thái | Quyết định |
 | :--- | :--- | :--- |
-| [0001](0001-cloud-first-free-tier.md) | accepted | Cloud-first on free managed services; self-hosted profile kept for development |
-| [0002](0002-docs-as-code-workflow.md) | accepted | Docs-as-code task and documentation workflow adapted from AIOps |
-| [0003](0003-public-repo-auto-commit-push.md) | accepted | Public repository; agents commit and push to `main` automatically |
+| [0001](0001-cloud-first-free-tier.md) | accepted | Ưu tiên Cloud trên các dịch vụ managed miễn phí; giữ cấu hình self-hosted phục vụ phát triển |
+| [0002](0002-docs-as-code-workflow.md) | accepted | Áp dụng quy trình quản lý tác vụ và tài liệu theo mô hình docs-as-code chuyển thể từ AIOps |
+| [0003](0003-public-repo-auto-commit-push.md) | accepted | Kho lưu trữ công khai; các agent tự động commit và push lên nhánh `main` |

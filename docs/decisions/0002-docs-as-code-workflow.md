@@ -1,41 +1,30 @@
-# 0002. Docs-as-code task and documentation workflow
+# 0002. Áp dụng quy trình quản lý tác vụ và tài liệu theo mô hình docs-as-code
 
-- Status: accepted
-- Date: 2026-11-05
-- Decided by: owner with Claude
+- Trạng thái: accepted
+- Ngày: 2026-11-05
+- Người quyết định: chủ dự án cùng Claude
 
-## Context
-Work on CodeLingo is done by the owner with Claude Code and Gemini/Antigravity
-across many sessions. Without a shared record, plans, findings and decisions live
-in chat transcripts and are lost when a session ends. The owner already runs a
-protocol for this in their AIOps workspace.
+## Ngữ cảnh (Context)
+Việc phát triển CodeLingo được thực hiện bởi chủ dự án cùng Claude Code và Gemini/Antigravity qua nhiều phiên làm việc khác nhau. Nếu không có một hệ thống ghi nhận chung, các kế hoạch, phát hiện và quyết định sẽ chỉ nằm lại trong lịch sử chat và biến mất khi phiên làm việc kết thúc. Chủ dự án đã và đang vận hành hiệu quả một bộ giao thức cho việc này trong workspace AIOps cá nhân.
 
-## Decision
-Adopt a trimmed version of the AIOps protocol:
+## Quyết định (Decision)
+Áp dụng một phiên bản rút gọn từ giao thức AIOps:
 
-- binding rules in [docs/protocol/](../protocol/README.md); `AGENTS.md`,
-  `CLAUDE.md`, `GEMINI.md` hold pointers only;
-- tickets in `docs/backlog/{open,ready,in_progress,done,cancel}/`, status by
-  directory;
-- findings in `docs/ledger/{open,resolved,cancelled}/` with mandatory evidence and
-  `next_review`;
-- ADRs in `docs/decisions/`;
-- one skill, `.agents/skills/codelingo-doc-manager/`, linked into
-  `.claude/skills/`;
-- `tools/docs/` scripts for link checking, housekeeping and secret scanning; the
-  link check runs in CI.
+- Mọi quy tắc ràng buộc nằm trong [docs/protocol/](../protocol/README.md); các file `AGENTS.md`, `CLAUDE.md`, `GEMINI.md` chỉ đóng vai trò con trỏ điều hướng;
+- Quản lý ticket trong `docs/backlog/{open,ready,in_progress,done,cancel}/`, trạng thái công việc tính theo thư mục chứa file;
+- Ghi nhận các phát hiện/nợ kỹ thuật trong `docs/ledger/{open,resolved,cancelled}/` bắt buộc phải có bằng chứng cụ thể và trường `next_review`;
+- Các bản ghi quyết định kiến trúc (ADR) lưu trong `docs/decisions/`;
+- Một kỹ năng điều phối duy nhất `.agents/skills/codelingo-doc-manager/`, được symlink vào `.claude/skills/`;
+- Các script trong `tools/docs/` phục vụ kiểm tra liên kết tài liệu, dọn dẹp housekeeping và quét secret; bước kiểm tra liên kết được chạy tự động trong CI;
+- **Quy tắc ngôn ngữ**: Toàn bộ nội dung tài liệu viết bằng tiếng Việt; tên file và thư mục luôn giữ bằng tiếng Anh.
 
-Dropped from AIOps: Vault/Kubernetes/SSH rules, command logging, safety-gate
-hooks, memory folder.
+Những phần đã loại bỏ so với bản AIOps gốc: các quy tắc về Vault / Kubernetes / SSH, cơ chế ghi log lệnh shell, các git hooks chặn an toàn và thư mục memory.
 
-## Alternatives considered
-- GitHub Issues/Projects — not readable offline by agents without API calls,
-  and splits context from the code.
-- Full AIOps setup with hooks — more machinery than a single-developer app needs.
-- Nothing — the status quo that lost context.
+## Các phương án thay thế đã xem xét (Alternatives considered)
+- Sử dụng GitHub Issues / Projects — agent không thể đọc ngoại tuyến nếu không gọi API qua mạng, và làm phân mảnh ngữ cảnh khỏi kho mã nguồn.
+- Giữ nguyên toàn bộ cấu hình đồ sộ của AIOps kèm hooks — quá cồng kềnh so với một ứng dụng của một lập trình viên duy nhất.
+- Không dùng gì cả — duy trì hiện trạng khiến ngữ cảnh và lịch sử quyết định liên tục bị thất lạc.
 
-## Consequences
-- Every non-trivial change has a ticket with a plan and a log an interrupted
-  session can resume from.
-- Tickets and ledger entries are public (see ADR 0003), so they must not contain
-  secrets or employer-internal details.
+## Hệ quả (Consequences)
+- Mọi thay đổi không nhỏ đều có một ticket đi kèm kế hoạch và nhật ký thực hiện chi tiết, giúp các phiên làm việc sau dễ dàng tiếp tục ngay cả khi phiên trước bị ngắt quãng.
+- Các ticket và mục ledger đều ở chế độ công khai (xem ADR 0003), do đó tuyệt đối không được đưa thông tin bảo mật hay dữ liệu nội bộ công ty vào.

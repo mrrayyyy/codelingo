@@ -1,6 +1,5 @@
 # docs/tmp
 
-Scratch space for working files: query output, throwaway scripts, screenshots.
-Use `docs/tmp/<YYYYMMDD>_<task>/`. Everything here except this README is
-git-ignored — the finding a file produced belongs in its ticket or ledger entry.
-Never put secrets or employer data here either; the folder is ignored, not safe.
+Không gian tạm thời (scratch space) dành cho các file làm việc tạm: kết quả truy vấn, script dùng một lần, ảnh chụp màn hình.
+Sử dụng đường dẫn dạng `docs/tmp/<YYYYMMDD>_<task>/`. Mọi thứ trong thư mục này ngoại trừ file README này đều đã được đưa vào git-ignore — các phát hiện thu được từ các file tạm thuộc về ticket hoặc bản ghi ledger tương ứng.
+Tuyệt đối không lưu khóa bí mật hoặc dữ liệu của cơ quan/doanh nghiệp tại đây; thư mục này chỉ được git bỏ qua chứ không bảo đảm an toàn.

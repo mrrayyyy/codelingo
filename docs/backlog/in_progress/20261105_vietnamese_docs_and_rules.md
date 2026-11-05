@@ -39,8 +39,8 @@ Yêu cầu trực tiếp từ chủ dự án:
 - [x] Cập nhật `docs/protocol/README.md`, `NAVIGATION.md`, `EXECUTION.md`, `KANBAN.md`, `LEDGER.md`, `DOC_SYNC.md`, `VERIFICATION.md`, `SECRETS.md`.
 
 ### Nhóm 3: Chuyển đổi Kiến trúc, Sản phẩm, Runbooks & Quyết định (ADR)
-- [ ] Cập nhật `docs/architecture.md`, `docs/product/roadmap.md`, `docs/verification.md`, `docs/cloud-deployment.vi.md`, `docs/runbooks/housekeeping.md`, `docs/tmp/README.md`.
-- [ ] Cập nhật `docs/decisions/README.md`, `0000-template.md`, `0001-cloud-first-free-tier.md`, `0002-docs-as-code-workflow.md`, `0003-public-repo-auto-commit-push.md`.
+- [x] Cập nhật `docs/architecture.md`, `docs/product/roadmap.md`, `docs/verification.md`, `docs/cloud-deployment.vi.md`, `docs/runbooks/housekeeping.md`, `docs/tmp/README.md`.
+- [x] Cập nhật `docs/decisions/README.md`, `0000-template.md`, `0001-cloud-first-free-tier.md`, `0002-docs-as-code-workflow.md`, `0003-public-repo-auto-commit-push.md`.
 
 ### Nhóm 4: Chuyển đổi Backlog & Ledger
 - [ ] Cập nhật `docs/backlog/_TEMPLATE.md` và các ticket trong `ready/`, `open/`, `done/`.
@@ -55,6 +55,7 @@ Yêu cầu trực tiếp từ chủ dự án:
 - 2026-11-05: Khởi tạo ticket chuyển đổi toàn bộ tài liệu sang tiếng Việt và thiết lập quy tắc ngôn ngữ.
 - 2026-11-05: Hoàn thành Nhóm 1: Cập nhật hợp đồng agent (`AGENTS.md`, `CLAUDE.md`, `GEMINI.md`, `frontend/AGENTS.md`) và kỹ năng quản lý tài liệu `SKILL.md` sang tiếng Việt cùng quy tắc giữ nguyên tên file/thư mục tiếng Anh.
 - 2026-11-05: Hoàn thành Nhóm 2: Chuyển đổi toàn bộ `README.md` và 8 tài liệu giao thức trong `docs/protocol/` sang tiếng Việt.
+- 2026-11-05: Hoàn thành Nhóm 3: Chuyển đổi toàn bộ tài liệu kiến trúc, lộ trình roadmap, bản ghi xác minh, runbooks và toàn bộ các ADR trong `docs/decisions/` sang tiếng Việt.
 
 ## Deviations
 None
