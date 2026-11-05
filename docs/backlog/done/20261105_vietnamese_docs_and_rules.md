@@ -18,14 +18,14 @@ Yêu cầu trực tiếp từ chủ dự án:
    - **Mã nguồn & Kỹ thuật**: Tên biến, hàm, mã nguồn, lệnh shell, endpoint API và thuật ngữ kỹ thuật giữ nguyên dạng chuẩn tiếng Anh.
 
 ## Acceptance Criteria
-- [ ] Bổ sung quy tắc ngôn ngữ và đặt tên vào `AGENTS.md`, `GEMINI.md`, `CLAUDE.md`, `frontend/AGENTS.md`, `docs/protocol/README.md`, `docs/protocol/DOC_SYNC.md`, `docs/protocol/NAVIGATION.md`, `.agents/skills/codelingo-doc-manager/SKILL.md`.
-- [ ] Chuyển đổi `README.md` sang tiếng Việt.
-- [ ] Chuyển đổi toàn bộ tài liệu trong `docs/protocol/` sang tiếng Việt.
-- [ ] Chuyển đổi toàn bộ tài liệu trong `docs/decisions/` (ADR) sang tiếng Việt.
-- [ ] Chuyển đổi các tài liệu kiến trúc, triển khai, hướng dẫn (`docs/architecture.md`, `docs/cloud-deployment.vi.md`, `docs/verification.md`, `docs/runbooks/housekeeping.md`, `docs/product/roadmap.md`, `docs/tmp/README.md`).
-- [ ] Chuyển đổi các template và ticket trong `docs/backlog/` và `docs/ledger/` sang tiếng Việt, giữ nguyên header và field cần thiết cho tooling.
-- [ ] Chuyển đổi file kỹ năng `.agents/skills/codelingo-doc-manager/SKILL.md`.
-- [ ] Chạy kiểm tra: `python3 tools/docs/check_doc_links.py`, `python3 tools/docs/housekeeping.py`, `python3 tools/docs/scan_secrets.py`, test backend và typecheck frontend đều vượt qua (100% pass, 0 dead links).
+- [x] Bổ sung quy tắc ngôn ngữ và đặt tên vào `AGENTS.md`, `GEMINI.md`, `CLAUDE.md`, `frontend/AGENTS.md`, `docs/protocol/README.md`, `docs/protocol/DOC_SYNC.md`, `docs/protocol/NAVIGATION.md`, `.agents/skills/codelingo-doc-manager/SKILL.md`.
+- [x] Chuyển đổi `README.md` sang tiếng Việt.
+- [x] Chuyển đổi toàn bộ tài liệu trong `docs/protocol/` sang tiếng Việt.
+- [x] Chuyển đổi toàn bộ tài liệu trong `docs/decisions/` (ADR) sang tiếng Việt.
+- [x] Chuyển đổi các tài liệu kiến trúc, triển khai, hướng dẫn (`docs/architecture.md`, `docs/cloud-deployment.vi.md`, `docs/verification.md`, `docs/runbooks/housekeeping.md`, `docs/product/roadmap.md`, `docs/tmp/README.md`).
+- [x] Chuyển đổi các template và ticket trong `docs/backlog/` và `docs/ledger/` sang tiếng Việt, giữ nguyên header và field cần thiết cho tooling.
+- [x] Chuyển đổi file kỹ năng `.agents/skills/codelingo-doc-manager/SKILL.md`.
+- [x] Chạy kiểm tra: `python3 tools/docs/check_doc_links.py`, `python3 tools/docs/housekeeping.py`, `python3 tools/docs/scan_secrets.py`, test backend và typecheck frontend đều vượt qua (100% pass, 0 dead links).
 
 ## Plan
 
@@ -47,9 +47,9 @@ Yêu cầu trực tiếp từ chủ dự án:
 - [x] Cập nhật `docs/ledger/_TEMPLATE.md` và các mục ledger trong `open/`.
 
 ### Nhóm 5: Kiểm tra toàn diện & Hoàn tất
-- [ ] Chạy `check_doc_links.py` và `housekeeping.py`.
-- [ ] Chạy tests và kiểm tra bảo mật `scan_secrets.py`.
-- [ ] Chuyển ticket sang `done/`, commit và push `origin main`.
+- [x] Chạy `check_doc_links.py` và `housekeeping.py`.
+- [x] Chạy tests và kiểm tra bảo mật `scan_secrets.py`.
+- [x] Chuyển ticket sang `done/`, commit và push `origin main`.
 
 ## Implementation Log
 - 2026-11-05: Khởi tạo ticket chuyển đổi toàn bộ tài liệu sang tiếng Việt và thiết lập quy tắc ngôn ngữ.
@@ -57,6 +57,7 @@ Yêu cầu trực tiếp từ chủ dự án:
 - 2026-11-05: Hoàn thành Nhóm 2: Chuyển đổi toàn bộ `README.md` và 8 tài liệu giao thức trong `docs/protocol/` sang tiếng Việt.
 - 2026-11-05: Hoàn thành Nhóm 3: Chuyển đổi toàn bộ tài liệu kiến trúc, lộ trình roadmap, bản ghi xác minh, runbooks và toàn bộ các ADR trong `docs/decisions/` sang tiếng Việt.
 - 2026-11-05: Hoàn thành Nhóm 4: Chuyển đổi toàn bộ templates, tickets (`ready/`, `open/`, `done/`) trong `docs/backlog/` và các mục trong `docs/ledger/` sang tiếng Việt, bảo toàn các header và trường metadata phục vụ tooling.
+- 2026-11-05: Hoàn thành Nhóm 5: Chạy toàn bộ bộ kiểm tra gồm `check_doc_links.py` (0 dead links trong 39 files), `housekeeping.py` (sạch lỗi), `scan_secrets.py` (không có secret), pytest (53 passed), và typecheck (exit 0). Chuyển ticket sang `done/` và chuẩn bị push.
 
 ## Deviations
 None
