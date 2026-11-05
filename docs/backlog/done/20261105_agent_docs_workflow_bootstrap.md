@@ -70,8 +70,23 @@ Decisions taken with the owner on 2026-11-05 (question dialog):
   Baseline commit `e5d8c8e`.
 - 2026-11-05 — Wrote protocol, entry files, skill, templates, ADRs, tools,
   roadmap, seed tickets and ledger entries.
+- 2026-11-05 — Checks: `check_doc_links.py` → 0 dead links in 38 files;
+  `housekeeping.py` correctly flagged this ticket as never committed; scanner
+  caught a synthetic Groq key and skipped the marked fixtures; pytest 53 passed;
+  typecheck clean.
+- 2026-11-05 — `scan_secrets.py` hung inside a commit chain: it chose stdin when
+  `isatty()` was false, which is always the case in agent shells. Fixed to read
+  stdin only with an explicit `-`; protocol examples updated.
+- 2026-11-05 — Commits `e6e49ba` (protocol) and `e71221e` (roadmap, backlog).
+- 2026-11-05 — `gh repo create ray-dd1510/codelingo` → HTTP 404: `gh auth status`
+  shows a stale keyring label; `gh api user` → login `mrrayyyy`. Renamed the
+  owner in docs (`4a4798f`), created https://github.com/mrrayyyy/codelingo
+  (public) and pushed `main`.
 
 ## Deviations
 - Existing `docs/architecture.md`, `docs/cloud-deployment.vi.md` and
   `docs/verification.md` stay where they are (README links them); NAVIGATION
   maps them instead of moving them.
+- Repository owner is `mrrayyyy`, not `ray-dd1510` as agreed in the question
+  dialog — same account, current login name. No follow-up needed.
+- Scanner stdin bug fixed inside this ticket (see log). No follow-up needed.
