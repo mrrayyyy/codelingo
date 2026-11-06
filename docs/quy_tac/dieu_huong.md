@@ -25,7 +25,7 @@ Nơi lưu trữ của từng loại thông tin và dữ kiện. Hãy tra cứu t
 | Cấu hình và biến môi trường | `backend/app/config.py`, `.env.example`, `.env.cloud.example` |
 | Mô hình dữ liệu database | `backend/app/db.py` |
 | Đường ống trích xuất từ vựng (Tree-sitter → spaCy → xếp hạng) | `backend/app/extraction.py`, `backend/app/lexicon.py` |
-| Quản lý tác vụ import, an toàn file nén, worker ARQ | `backend/app/imports.py` |
+| Quản lý tác vụ import, an toàn file nén, dọn file tạm | `backend/app/imports.py` |
 | Trích xuất từ xa trên GitHub Actions | `backend/app/cloud_jobs.py`, `scripts/cloud_extract.py`, `.github/workflows/extract.yml` |
 | Thuật toán lặp lại ngắt quãng (FSRS) | `backend/app/srs.py` |
 | Các plugin luyện tập | `backend/app/plugins.py`; hợp đồng tại `backend/app/contracts.py` và `shared/plugins.ts` |

@@ -4,11 +4,11 @@
 
 ## 1. Đánh giá kiến trúc và các quyết định cốt lõi
 
-Giữ nguyên Next.js App Router + TypeScript, FastAPI, PostgreSQL, Redis, và ARQ. Python đảm nhiệm đường ống trích xuất, các bộ điều hợp dịch vụ (adapters), chấm điểm bài tập và thuật toán FSRS; trình duyệt không bao giờ tự tính toán lịch ôn tập. ARQ gọn nhẹ và phù hợp hơn Celery cho dịch vụ async FastAPI. Redis chỉ chứa ID công việc (job ID), tuyệt đối không lưu trữ mã nguồn người dùng tải lên. Một worker đơn lẻ là đủ đáp ứng nhu cầu cho bản MVP.
+Giữ nguyên Next.js App Router + TypeScript, FastAPI và PostgreSQL. Python đảm nhiệm đường ống trích xuất, các bộ điều hợp dịch vụ (adapters), chấm điểm bài tập và thuật toán FSRS; trình duyệt không bao giờ tự tính toán lịch ôn tập. Tác vụ import có hai chế độ ([ADR 0004](quyet_dinh/0004_bo_che_do_arq_redis.md)): `inline` chạy trong tiến trình API, tuần tự từng import một (dev, CI, Compose); `github_actions` gửi job ID cho runner GitHub Actions trích xuất rồi gọi callback trả kết quả (cloud). Chế độ ARQ/Redis ban đầu đã được gỡ bỏ vì không môi trường nào còn dùng.
 
-Các quyết định sản phẩm đã chốt: triển khai self-hosted cho người dùng đơn; ưu tiên import qua file ZIP và kho lưu trữ GitHub công khai; tính năng OAuth cho repo riêng tư để lại sau; truy cập từ điển qua mạng mặc định ở trạng thái tắt. Môi trường phát triển cục bộ cũng hỗ trợ SQLite và bộ chạy job in-process (chạy trong cùng tiến trình). Đây là các giải pháp thay thế phục vụ dev, không phải hàng đợi tác vụ bền vững. Môi trường Docker Compose sử dụng PostgreSQL và ARQ tiêu chuẩn.
+Các quyết định sản phẩm đã chốt: triển khai self-hosted cho người dùng đơn; ưu tiên import qua file ZIP và kho lưu trữ GitHub công khai; tính năng OAuth cho repo riêng tư để lại sau; truy cập từ điển qua mạng mặc định ở trạng thái tắt. Môi trường phát triển cục bộ cũng hỗ trợ SQLite và bộ chạy job in-process (chạy trong cùng tiến trình). Đây là các giải pháp thay thế phục vụ dev, không phải hàng đợi tác vụ bền vững. Môi trường Docker Compose sử dụng PostgreSQL với chế độ job `inline`.
 
-Không lưu trữ toàn bộ file mã nguồn để phục vụ Monaco Editor. Chỉ lưu trữ các đoạn trích ngữ cảnh ngắn đã được làm sạch và hiển thị trên editor ở chế độ chỉ đọc, kèm theo thông tin số dòng và đường dẫn file gốc. Các file nén tải lên được giữ tạm trong thư mục spool có giới hạn dung lượng cho đến khi worker đọc xong và sẽ bị xóa ngay trong khối `finally`, khi từ chối job, hoặc qua cơ chế dọn dẹp TTL định kỳ. Một sự cố sập nguồn có thể để lại file tạm cho đến khi chu kỳ dọn dẹp tiếp theo chạy. Tuyệt đối không lưu trữ mã nguồn hoàn chỉnh vào cơ sở dữ liệu.
+Không lưu trữ toàn bộ file mã nguồn để phục vụ Monaco Editor. Chỉ lưu trữ các đoạn trích ngữ cảnh ngắn đã được làm sạch và hiển thị trên editor ở chế độ chỉ đọc, kèm theo thông tin số dòng và đường dẫn file gốc. Các file nén tải lên được giữ tạm trong thư mục spool có giới hạn dung lượng cho đến khi tác vụ import (trong tiến trình API hoặc trên runner GitHub Actions) đọc xong và sẽ bị xóa ngay trong khối `finally`, khi từ chối job, hoặc qua cơ chế dọn dẹp TTL định kỳ. Một sự cố sập nguồn có thể để lại file tạm cho đến khi chu kỳ dọn dẹp tiếp theo chạy. Tuyệt đối không lưu trữ mã nguồn hoàn chỉnh vào cơ sở dữ liệu.
 
 Khử trùng lặp từ vựng theo bộ khóa `(user_id, lemma, part_of_speech)`, không khử trùng lặp toàn cục: việc chia sẻ ngữ cảnh toàn cục giữa các user sẽ làm rò rỉ từ vựng từ các dự án riêng tư. Tần suất xuất hiện theo từng repository thuộc về bảng `repo_vocab`; lịch ôn tập thuộc về từ vựng của người dùng, nhờ đó việc import một repo mới không làm thiết lập lại tiến độ học tập trước đó.
 
@@ -28,9 +28,8 @@ flowchart LR
   U[Trình duyệt lập trình viên] --> N[Next.js App Router\nTiếng Anh / Tiếng Việt]
   N -->|API key phía server| A[FastAPI]
   A --> P[(PostgreSQL)]
-  A -->|Job ID| R[(Redis / ARQ)]
+  A -->|inline: background task\ngithub_actions: job ID| W[Tác vụ import\ntiến trình API hoặc runner GitHub Actions]
   A --> T[Thư mục tạm upload spool\nTTL / giới hạn dung lượng]
-  R --> W[Python worker]
   T --> W
   W --> G[Tải archive GitHub trong allowlist]
   W --> E[Tree-sitter → lọc văn bản xuôi\nspaCy → từ điển → xếp hạng]
@@ -162,7 +161,7 @@ Lệnh `python -m app.extraction path/to/repo` xuất ra kết quả JSON đã �
 
 | Tuần | Mục tiêu bàn giao | Tiêu chí chấp nhận |
 | :--- | :--- | :--- |
-| 1 | Import, xử lý file nén an toàn, bóc tách TypeScript/Python, lọc spaCy, PostgreSQL/ARQ | Test trích xuất repo mẫu vượt qua; xử lý lỗi ZIP/GitHub rõ ràng; xóa sạch mã nguồn tạm |
+| 1 | Import, xử lý file nén an toàn, bóc tách TypeScript/Python, lọc spaCy, PostgreSQL/ARQ (ARQ đã gỡ theo ADR 0004) | Test trích xuất repo mẫu vượt qua; xử lý lỗi ZIP/GitHub rõ ràng; xóa sạch mã nguồn tạm |
 | 2 | Trình duyệt từ vựng, ngữ cảnh gốc, flashcards, FSRS, bảng điều khiển | Chu trình Import → Ôn tập hoạt động bền vững qua các lần restart; test khử trùng lặp và ôn tập đồng thời |
 | 3 | Luyện chép chính tả và đọc hiểu; adapter TTS cục bộ, hiển thị trạng thái dịch vụ | Âm thanh thật từ provider được cấu hình; chấm điểm xác định; import offline không đổi |
 | 4 | Giao diện tiếng Việt, xuất dữ liệu, kiểm soát quyền riêng tư, hoàn thiện triển khai | Smoke test Compose; xóa repo an toàn; xuất CSV/Anki; tài liệu vận hành hoàn chỉnh |

@@ -38,14 +38,14 @@ docker compose up --build -d
 
 Mở trình duyệt tại **http://localhost:3000**. Chọn **Import repository → Try the Atlas API sample repository**, hoặc import repo GitHub công khai / file ZIP của bạn. Theo dõi tiến độ import tại mục My repositories, duyệt Từ vựng (Vocabulary), và mở Ôn tập ngắt quãng (Spaced review). Lật mở nghĩa từ vựng, tự đánh giá mức độ ghi nhớ; server sẽ lưu lại thời gian ôn tập tiếp theo theo thuật toán FSRS.
 
-Cổng web bind vào loopback cục bộ. PostgreSQL, Redis và API là các dịch vụ nội bộ. Sử dụng từ xa cần có TLS và xác thực qua reverse proxy; bản single-user không có màn hình đăng nhập. File `.env` được đưa vào `.gitignore`. Mật khẩu trong chuỗi kết nối cần bảo đảm URL-safe; `secrets.token_urlsafe` là định dạng phù hợp. Đặt `WEB_PORT` nếu cổng 3000 đã bị chiếm dụng.
+Cổng web bind vào loopback cục bộ. PostgreSQL và API là các dịch vụ nội bộ; import chạy ngay trong tiến trình API (`JOB_MODE=inline`). Sử dụng từ xa cần có TLS và xác thực qua reverse proxy; bản single-user không có màn hình đăng nhập. File `.env` được đưa vào `.gitignore`. Mật khẩu trong chuỗi kết nối cần bảo đảm URL-safe; `secrets.token_urlsafe` là định dạng phù hợp. Đặt `WEB_PORT` nếu cổng 3000 đã bị chiếm dụng.
 
 ```sh
-docker compose logs -f api worker
+docker compose logs -f api
 docker compose down                 # dừng dịch vụ, vẫn giữ nguyên dữ liệu học tập
 ```
 
-Không chạy `docker compose down -v` trừ khi bạn chủ động muốn xóa sạch toàn bộ dữ liệu học tập đã lưu. Sao lưu PostgreSQL bằng `pg_dump`; Redis sử dụng chế độ lưu bền vững AOF cho hàng đợi tác vụ.
+Không chạy `docker compose down -v` trừ khi bạn chủ động muốn xóa sạch toàn bộ dữ liệu học tập đã lưu. Sao lưu PostgreSQL bằng `pg_dump`.
 
 ## Chạy trực tiếp không cần Docker
 
@@ -63,7 +63,7 @@ File lockfile sẽ cài sẵn model tiếng Anh spaCy. Nếu cài trực tiếp 
 
 ## Các tính năng đã triển khai
 
-- Import giới hạn kích thước với ZIP và GitHub công khai, thăm dò tiến độ (polling), dọn dẹp file tạm, lưu trữ an toàn khi retry, PostgreSQL + Redis/ARQ trong môi trường Compose.
+- Import giới hạn kích thước với ZIP và GitHub công khai, thăm dò tiến độ (polling), dọn dẹp file tạm, lưu trữ an toàn khi retry; import chạy trong tiến trình API (dev/Compose, PostgreSQL) hoặc trên runner GitHub Actions (cloud).
 - Sử dụng Tree-sitter bóc tách comment, docstring Python, chuỗi string và tên định danh cho TypeScript/TSX, JavaScript/JSX, Python, Java, và Go. Bóc tách văn bản xuôi Markdown nằm ngoài các khối code block. Tuyệt đối không thực thi mã nguồn người dùng tải lên.
 - Tách từ dạng camelCase / snake_case / acronyms; chuẩn hóa từ gốc (lemmatization) và gán nhãn từ loại (POS) qua spaCy; loại bỏ stopwords, từ khóa cú pháp, và từ vựng A1 cơ bản; bộ lọc ngôn ngữ và lọc mẫu chuỗi khóa bảo mật; tính toán tần suất theo từng repo, ước lượng CEFR, gán nhãn tags và xếp hạng từ vựng. Thứ hạng tính theo hàm logarit tần suất để các định danh sinh tự động không lấn át văn bản đọc hiểu.
 - Khử trùng lặp từ vựng giữa các repository của người dùng, trích xuất 1–3 ngữ cảnh gốc kèm số dòng mã nguồn, xem trước ngữ cảnh mã nguồn chỉ đọc với Monaco Editor có tô sáng từ vựng, hỗ trợ tìm kiếm và lọc từ vựng linh hoạt.
@@ -113,7 +113,7 @@ backend/app/
   contracts.py     hợp đồng định kiểu cho plugin và service
   extraction.py    đường ống: tree-sitter → spaCy → bộ lọc → xếp hạng
   lexicon.py       định nghĩa biên soạn thủ công và dữ liệu gốc ước lượng CEFR
-  imports.py       giới hạn file nén, vòng đời mã nguồn, worker ARQ
+  imports.py       giới hạn file nén, vòng đời mã nguồn, tác vụ import và dọn file tạm
   db.py            mô hình quan hệ và schema ban đầu
   srs.py           bộ điều hợp thuật toán lặp lại ngắt quãng FSRS
   plugins.py       bài tập đọc hiểu, chính tả, đọc to, viết, phản hồi code review
@@ -125,7 +125,7 @@ shared/            hợp đồng TypeScript cho plugin
 docs/              kiến trúc, quy tắc, công việc, nhật ký, quyết định kiến trúc, lộ trình
 tools/docs/        kiểm tra link tài liệu, dọn dẹp housekeeping, quét lộ secret
 scripts/dev.py     lệnh khởi chạy đồng thời hai dịch vụ dev cục bộ
-compose.yaml       PostgreSQL, Redis, API, worker, Next.js
+compose.yaml       PostgreSQL, API, Next.js
 ```
 
 Không có repository nào được tải tự động từ trước. **Atlas API** là một repo nhỏ được viết riêng cho mục đích kiểm thử; hình minh họa code trên dashboard chỉ mang tính trang trí, không phải nội dung trích xuất của người dùng. Font chữ, Monaco Editor và các web worker của editor đều được phân phối cục bộ. Monaco được build lại từ bản ESM để tích hợp bản vá DOMPurify ghi đè, tránh sử dụng gói vendor bundle chứa phiên bản cũ dễ bị lỗi bảo mật.
