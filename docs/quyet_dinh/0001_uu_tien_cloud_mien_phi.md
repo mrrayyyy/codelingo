@@ -25,5 +25,5 @@ Cấu hình Compose và chế độ job `inline` vẫn được duy trì phục 
 ## Hệ quả
 - Quá trình import repo diễn ra chậm hơn một chút (do thời gian khởi động runner GitHub Actions) nhưng hoàn toàn miễn phí và không gây tải máy cá nhân.
 - Các đặc tính của gói miễn phí (tự ngủ khi không dùng, hạn ngạch tài nguyên) sẽ định hình trải nghiệm giao diện người dùng; xem chi tiết tại lộ trình roadmap.
-- Phải duy trì tương thích cả 3 chế độ job (`inline`, `arq`, `github_actions`); xem [bản ghi nhật ký về việc đơn giản hóa các chế độ này](../nhat_ky/dang_mo/y_tuong_20261105_don_gian_hoa_che_do_job.md).
+- Phải duy trì tương thích cả 3 chế độ job (`inline`, `arq`, `github_actions`); xem [bản ghi nhật ký về việc đơn giản hóa các chế độ này](../nhat_ky/da_giai_quyet/y_tuong_20261105_don_gian_hoa_che_do_job.md).
 - Tính đến ngày 2026-11-05 cấu hình cloud này **chưa** được kích hoạt triển khai thực tế ([xac_minh.md](../xac_minh.md)).

@@ -1,8 +1,7 @@
 ---
 type: tech-debt
-status: open
+status: resolved
 discovered: 2026-11-05
-next_review: 2026-11-26
 source: backend test run, 20261105_khoi_tao_quy_trinh_tai_lieu_agent
 severity: low
 owner: claude
@@ -15,3 +14,6 @@ Chạy lệnh `.venv/bin/python -m pytest backend/tests -q` vào ngày 2026-11-0
 
 ## Hành động khuyến nghị
 Kiểm tra ghi chú phát hành (release notes) của Starlette để xem phương án thay thế chuẩn, ghim hoặc nâng cấp phiên bản trong `backend/pyproject.toml` và `backend/requirements.lock`, xác nhận cảnh báo biến mất và các bài test vẫn vượt qua bình thường.
+
+## Giải quyết
+2026-11-06: gộp vào ticket [20261106_bo_che_do_arq_redis](../../cong_viec/san_sang/20261106_bo_che_do_arq_redis.md) vì cùng sửa `backend/pyproject.toml` và sinh lại `backend/requirements.lock`.

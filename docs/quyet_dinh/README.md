@@ -30,3 +30,4 @@ Mỗi quyết định là một file riêng, đặt tên `NNNN_<slug>.md`, đán
 | [0001](0001_uu_tien_cloud_mien_phi.md) | accepted | Ưu tiên Cloud trên các dịch vụ managed miễn phí; giữ cấu hình self-hosted phục vụ phát triển |
 | [0002](0002_quy_trinh_docs_as_code.md) | accepted | Áp dụng quy trình quản lý tác vụ và tài liệu theo mô hình docs-as-code chuyển thể từ AIOps |
 | [0003](0003_repo_cong_khai_tu_dong_commit_push.md) | accepted | Kho lưu trữ công khai; các agent tự động commit và push lên nhánh `main` |
+| [0004](0004_bo_che_do_arq_redis.md) | accepted | Bỏ chế độ job ARQ/Redis; chỉ giữ `inline` (dev/CI/Compose) và `github_actions` (cloud) |
