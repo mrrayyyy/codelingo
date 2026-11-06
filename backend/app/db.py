@@ -11,6 +11,7 @@ from alembic.config import Config as AlembicConfig
 from alembic.migration import MigrationContext
 from sqlalchemy import JSON, Boolean, DateTime, Float, ForeignKey, Integer, MetaData, String, Text, UniqueConstraint, create_engine, event, inspect
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, sessionmaker
+from sqlalchemy.pool import NullPool
 
 from .config import settings
 
@@ -203,9 +204,21 @@ def migrate(connection) -> None:
     command.upgrade(alembic_config(connection), "head")
 
 
+def migration_engine():
+    """Neon advises a direct (non-pooled) connection for schema migrations; the app keeps the pooled URL."""
+    if not settings.migration_database_url:
+        return engine
+    return create_engine(settings.migration_database_url, pool_pre_ping=True, poolclass=NullPool)
+
+
 def init_db() -> None:
-    with engine.begin() as connection:
-        migrate(connection)
+    target = migration_engine()
+    try:
+        with target.begin() as connection:
+            migrate(connection)
+    finally:
+        if target is not engine:
+            target.dispose()
     with SessionLocal.begin() as db:
         if not db.get(User, "local-user"):
             db.add(User(id="local-user"))

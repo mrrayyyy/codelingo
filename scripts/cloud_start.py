@@ -11,6 +11,8 @@ if missing:
     raise SystemExit("Missing required cloud settings: " + ", ".join(missing))
 if not os.environ["DATABASE_URL"].startswith("postgresql+psycopg://"):
     raise SystemExit("Use a persistent PostgreSQL URL with the postgresql+psycopg:// scheme")
+if os.environ.get("MIGRATION_DATABASE_URL") and not os.environ["MIGRATION_DATABASE_URL"].startswith("postgresql+psycopg://"):
+    raise SystemExit("MIGRATION_DATABASE_URL must also use the postgresql+psycopg:// scheme")
 if len(os.environ["WORKSPACE_PASSWORD"]) < 16:
     raise SystemExit("WORKSPACE_PASSWORD must contain at least 16 characters")
 if len(os.environ["API_KEY"]) < 32 or os.environ["API_KEY"] == os.environ["WORKSPACE_PASSWORD"]:

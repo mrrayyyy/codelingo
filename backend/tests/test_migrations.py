@@ -66,3 +66,19 @@ def test_mismatched_pre_alembic_database_is_left_untouched(tmp_path):
         tables = set(inspect(connection).get_table_names())
         assert "alembic_version" not in tables
         assert "nickname" in {column["name"] for column in inspect(connection).get_columns("users")}
+
+
+def test_migrations_use_the_direct_url_when_configured(tmp_path, monkeypatch):
+    from app import db
+    from app.config import settings
+    assert db.migration_engine() is db.engine
+    monkeypatch.setattr(settings, "migration_database_url", f"sqlite:///{tmp_path / 'direct.db'}")
+    direct = db.migration_engine()
+    try:
+        assert direct is not db.engine
+        assert str(direct.url).endswith("direct.db")
+        with direct.begin() as connection:
+            migrate(connection)
+            assert head_revision(connection) == "0001_initial"
+    finally:
+        direct.dispose()

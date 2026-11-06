@@ -9,6 +9,8 @@ services:
     envVars:
       - key: DATABASE_URL
         sync: false
+      - key: MIGRATION_DATABASE_URL
+        sync: false
       - key: API_KEY
         generateValue: true
       - key: WORKSPACE_PASSWORD

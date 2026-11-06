@@ -8,6 +8,8 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
     database_url: str = "sqlite:///./.data/codelingo.db"
+    # Optional direct (non-pooled) URL used only for startup migrations, e.g. Neon without "-pooler".
+    migration_database_url: str = ""
     # inline: dev, CI and Compose; github_actions: managed cloud (ADR 0004).
     job_mode: Literal["inline", "github_actions"] = "inline"
     api_key: str = "local-development-key"

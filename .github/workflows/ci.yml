@@ -70,3 +70,17 @@ jobs:
           alembic -c backend/alembic.ini downgrade base
           alembic -c backend/alembic.ini upgrade head
           alembic -c backend/alembic.ini check
+  cloud-image:
+    # Render builds Dockerfile.cloud on deploy; build it here first so a broken image never reaches main.
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Build the Render image without pushing it
+        run: docker build --file Dockerfile.cloud --tag codelingo-cloud:ci .
+      - name: Image ships the Alembic migrations and starts its config checks
+        run: |
+          docker run --rm --entrypoint python codelingo-cloud:ci -c "import pathlib, alembic; assert pathlib.Path('/app/app/migrations/versions/0001_initial.py').is_file()"
+          if docker run --rm codelingo-cloud:ci; then echo "cloud_start.py must refuse to start without secrets"; exit 1; fi

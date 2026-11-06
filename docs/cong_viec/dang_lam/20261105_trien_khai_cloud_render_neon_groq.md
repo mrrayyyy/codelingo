@@ -24,22 +24,24 @@ Cập nhật 2026-11-06: chủ dự án xác nhận dùng Render + Neon + Groq g
 
 ## Kế hoạch
 ### Chuẩn bị (agent tự làm)
-- [ ] Tái xác minh các dữ kiện gói miễn phí trong `docs/trien_khai_cloud.md` (Render: thời gian ngủ, giờ chạy/tháng, RAM; Neon: dung lượng, compute, cơ chế sao lưu/khôi phục; GitHub Actions: phút chạy cho repo public; Groq: model, giới hạn request/token) theo tài liệu chính thức, ghi ngày tra cứu
-- [ ] Xác nhận các tên model Groq trong `backend/app/config.py` và `.env.cloud.example` còn hoạt động; cập nhật nếu cần
-- [ ] Thêm job CI build `Dockerfile.cloud` (chỉ build, không push) để phát hiện lỗi image trước khi Render build
-- [ ] Viết checklist từng bước có ảnh/tên nút cho phần `[user]` vào `docs/trien_khai_cloud.md` để chủ dự án làm theo nhanh
-- [ ] Chọn cách sao lưu: cơ chế khôi phục có sẵn của Neon theo gói free (nếu có) và/hoặc `pg_dump` thủ công trước mỗi migration. **Không** đưa bản dump lên artifact của GitHub Actions vì repo công khai
+- [x] Tái xác minh các dữ kiện gói miễn phí trong `docs/trien_khai_cloud.md` (Render: thời gian ngủ, giờ chạy/tháng, RAM; Neon: dung lượng, compute, cơ chế sao lưu/khôi phục; GitHub Actions: phút chạy cho repo public; Groq: model, giới hạn request/token) theo tài liệu chính thức, ghi ngày tra cứu
+- [x] Xác nhận các tên model Groq trong `backend/app/config.py` và `.env.cloud.example` còn hoạt động; cập nhật nếu cần
+- [x] Thêm job CI build `Dockerfile.cloud` (chỉ build, không push) để phát hiện lỗi image trước khi Render build — job `cloud-image`, kiểm tra thêm image có `migrations/` và `cloud_start.py` từ chối chạy khi thiếu secret
+- [x] Viết checklist từng bước có ảnh/tên nút cho phần `[user]` vào `docs/trien_khai_cloud.md` để chủ dự án làm theo nhanh
+- [x] Chọn cách sao lưu: cơ chế khôi phục có sẵn của Neon theo gói free (nếu có) và/hoặc `pg_dump` thủ công trước mỗi migration. **Không** đưa bản dump lên artifact của GitHub Actions vì repo công khai
+- [x] (phát sinh) Neon khuyến nghị kết nối trực tiếp cho schema migration: thêm biến tùy chọn `MIGRATION_DATABASE_URL` (`config.py`, `db.migration_engine()`, `cloud_start.py`, `render.yaml`, `.env.cloud.example`) + test
+- [ ] Push phần chuẩn bị; CI (`test`, `migrations`, `cloud-image`) xanh
 ### Tài khoản và khóa bí mật
-- [ ] `[user]` Tạo project trên Neon (region gần Singapore); giữ kín chuỗi kết nối
+- [ ] `[user]` Tạo project trên Neon (region gần Singapore); lấy cả chuỗi pooled và chuỗi trực tiếp; giữ kín
 - [ ] `[user]` Tạo fine-grained GitHub token chỉ cho repo `mrrayyyy/codelingo`, quyền Actions: write
-- [ ] `[user]` Tạo dịch vụ trên Render từ blueprint `render.yaml`; nhập các biến môi trường secret (`DATABASE_URL`, `WORKSPACE_PASSWORD`, `GITHUB_ACTIONS_TOKEN`, `GITHUB_ACTIONS_REPO`)
+- [ ] `[user]` Tạo dịch vụ trên Render từ blueprint `render.yaml`; nhập các biến môi trường secret (`DATABASE_URL`, `MIGRATION_DATABASE_URL`, `WORKSPACE_PASSWORD`, `GITHUB_ACTIONS_TOKEN`, `GITHUB_ACTIONS_REPO`)
 - [ ] `[user]` Thêm secret `CODELINGO_URL` và `CODELINGO_API_KEY` vào GitHub Actions secrets của repo
 - [ ] `[user]` Tạo Groq API key và nhập `GROQ_API_KEY` trên Render
 ### Deploy và kiểm chứng
 - [ ] `[gate]` Lần deploy đầu tiên (migration `0001_initial` tự chạy trên Neon trống); kiểm tra `/api/health`
 - [ ] Import repo mẫu Atlas từ đầu tới cuối qua GitHub Actions; ôn thử một thẻ; restart dịch vụ; dữ liệu ôn tập vẫn còn
 - [ ] Import thử một repo public nổi tiếng cỡ vừa; ghi lại thời gian Actions và số từ trích xuất (phục vụ đánh giá giới hạn)
-- [ ] Thử Groq TTS/STT/LLM qua các bài đọc to, chép chính tả, viết; ghi độ trễ
+- [ ] Thử Groq TTS/STT/LLM qua các bài đọc to, chép chính tả, viết; ghi độ trễ; xác nhận giọng `troy` hợp lệ và hạn mức thật của tài khoản Free trên trang Limits
 - [ ] Đo thời gian khởi động nguội sau khi app ngủ (3 lần); ghi số liệu cho ticket PWA
 - [ ] `[user]` Mở app trên điện thoại và Mac qua HTTPS + Basic Auth
 ### Đồng bộ tài liệu
@@ -53,5 +55,11 @@ Cập nhật 2026-11-06: chủ dự án xác nhận dùng Render + Neon + Groq g
 - Các kho mã nguồn được import tại đây sẽ chạy qua các runner Actions của repo công khai; log chỉ in số lượng thống kê, nhưng chỉ import repo công khai hoặc mã nguồn thuộc quyền sở hữu (bao_mat.md).
 
 ## Nhật ký thực hiện
+- 2026-11-06: chuyển sang `dang_lam` (chỉ phần chuẩn bị phía agent; mọi thao tác cloud chờ chủ dự án).
+- 2026-11-06: tra cứu tài liệu chính thức: Render Free (750 giờ, ngủ sau 15 phút, khởi động ~1 phút, file tạm mất khi ngủ/restart), Neon Free (1 GB, 100 CU-giờ/project, tự tắt sau 5 phút, lịch sử 6 giờ, 10 branch, **kết nối trực tiếp cho migration**), GitHub Actions (standard runner miễn phí cho repo công khai), Groq (cả 3 model mặc định còn trong danh sách; Orpheus TTS là Preview; bảng giới hạn gốc của gói Developer cho Orpheus chỉ 100 request/ngày, 3.600 token/ngày). Ghi vào `docs/trien_khai_cloud.md` kèm ngày.
+- 2026-11-06: thêm `MIGRATION_DATABASE_URL` tùy chọn: `db.migration_engine()` dùng `NullPool` và dispose sau khi migrate; `cloud_start.py` kiểm tra scheme; blueprint và `.env.cloud.example` có biến mới; test `test_migrations_use_the_direct_url_when_configured`. `pytest` → 62 passed.
+- 2026-11-06: thêm job CI `cloud-image`: build `Dockerfile.cloud`, kiểm tra image chứa `app/migrations/versions/0001_initial.py`, và `cloud_start.py` thoát lỗi khi thiếu secret.
+- 2026-11-06: viết lại `docs/trien_khai_cloud.md`: dữ kiện free tier có ngày, checklist 6 bước cho chủ dự án (Neon 2 chuỗi kết nối, fine-grained token, Groq, Render Blueprint, GitHub secrets, mở app), mục sao lưu.
+- 2026-11-06: hạn mức TTS Groq rất thấp → thêm mục giọng đọc dự phòng (Web Speech API) vào kế hoạch ticket PWA, mô phỏng nói và luyện nghe.
 
 ## Sai lệch
