@@ -17,7 +17,10 @@ from fastapi.testclient import TestClient
 
 @pytest.fixture
 def client():
+    # Start every API test from an empty database so the lifespan builds it through Alembic.
     Base.metadata.drop_all(engine)
+    with engine.begin() as connection:
+        connection.exec_driver_sql("DROP TABLE IF EXISTS alembic_version")
     with TestClient(app, headers={"X-API-Key": "local-development-key"}) as client:
         yield client
 

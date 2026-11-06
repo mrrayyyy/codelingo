@@ -5,10 +5,23 @@ from datetime import datetime, timezone
 from pathlib import Path
 from uuid import uuid4
 
-from sqlalchemy import JSON, Boolean, DateTime, Float, ForeignKey, Integer, String, Text, UniqueConstraint, create_engine, event
+from alembic import command
+from alembic.autogenerate import compare_metadata
+from alembic.config import Config as AlembicConfig
+from alembic.migration import MigrationContext
+from sqlalchemy import JSON, Boolean, DateTime, Float, ForeignKey, Integer, MetaData, String, Text, UniqueConstraint, create_engine, event, inspect
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, sessionmaker
 
 from .config import settings
+
+# Stable constraint names so SQLite and PostgreSQL migrations stay identical (Alembic docs, "naming conventions").
+NAMING_CONVENTION = {
+    "ix": "ix_%(column_0_label)s",
+    "uq": "uq_%(table_name)s_%(column_0_N_name)s",
+    "ck": "ck_%(table_name)s_%(constraint_name)s",
+    "fk": "fk_%(table_name)s_%(column_0_name)s_%(referred_table_name)s",
+    "pk": "pk_%(table_name)s",
+}
 
 
 def now() -> datetime:
@@ -20,7 +33,7 @@ def uid() -> str:
 
 
 class Base(DeclarativeBase):
-    pass
+    metadata = MetaData(naming_convention=NAMING_CONVENTION)
 
 
 class User(Base):
@@ -145,9 +158,54 @@ if settings.database_url.startswith("sqlite"):
 SessionLocal = sessionmaker(engine, expire_on_commit=False)
 
 
+MIGRATIONS = Path(__file__).parent / "migrations"
+
+
+def alembic_config(connection=None) -> AlembicConfig:
+    """Alembic config that works from any cwd and inside both Docker images."""
+    config = AlembicConfig()
+    config.set_main_option("script_location", str(MIGRATIONS))
+    config.set_main_option("sqlalchemy.url", settings.database_url.replace("%", "%%"))
+    if connection is not None:
+        config.attributes["connection"] = connection
+    return config
+
+
+def _sqlite_unique_index_exists(connection, diff) -> bool:
+    """SQLite reflection misses unnamed column-level UNIQUE constraints, though their unique index exists."""
+    if connection.dialect.name != "sqlite" or diff[0] != "add_constraint" or not isinstance(diff[1], UniqueConstraint):
+        return False
+    table, columns = diff[1].table.name, [column.name for column in diff[1].columns]
+    # Table and index names come from our own metadata and sqlite_master, never from user input.
+    for _, name, unique, *_ in connection.exec_driver_sql(f'PRAGMA index_list("{table}")'):
+        if unique and [row[2] for row in connection.exec_driver_sql(f'PRAGMA index_info("{name}")')] == columns:
+            return True
+    return False
+
+
+def schema_differences(connection) -> list:
+    """Differences between the live database and the models (empty when in sync)."""
+    context = MigrationContext.configure(connection, opts={"compare_type": True})
+    return [diff for diff in compare_metadata(context, Base.metadata) if not _sqlite_unique_index_exists(connection, diff)]
+
+
+def migrate(connection) -> None:
+    tables = set(inspect(connection).get_table_names())
+    if tables and "alembic_version" not in tables:
+        # Database created by the pre-Alembic create_all(): adopt it only if it matches revision 0001.
+        differences = schema_differences(connection)
+        if differences:
+            raise RuntimeError(
+                "Existing database was created before Alembic and does not match the initial schema "
+                f"({len(differences)} difference(s)). Back it up, then remove it or migrate it manually; "
+                "data was not modified.")
+        command.stamp(alembic_config(connection), "0001_initial")
+    command.upgrade(alembic_config(connection), "head")
+
+
 def init_db() -> None:
-    # Initial schema only. Introduce versioned Alembic migrations before schema upgrades.
-    Base.metadata.create_all(engine)
+    with engine.begin() as connection:
+        migrate(connection)
     with SessionLocal.begin() as db:
         if not db.get(User, "local-user"):
             db.add(User(id="local-user"))
