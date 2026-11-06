@@ -130,13 +130,13 @@ def persist_items(job_id: str, items: list[Vocab]) -> None:
         job.updated_at = now()
 
 
-async def process_import(ctx: dict, job_id: str) -> None:
-    # Match the single ARQ worker's concurrency in development mode as well.
+async def process_import(job_id: str) -> None:
+    # Imports run inside the API process; one at a time keeps memory bounded.
     async with _import_lock:
-        await _process_import(ctx, job_id)
+        await _process_import(job_id)
 
 
-async def _process_import(ctx: dict, job_id: str) -> None:
+async def _process_import(job_id: str) -> None:
     spool = settings.spool_dir / f"{job_id}.zip"
     try:
         with SessionLocal() as db:
@@ -167,7 +167,7 @@ async def _process_import(ctx: dict, job_id: str) -> None:
         spool.unlink(missing_ok=True)
 
 
-async def cleanup_spool(ctx: dict) -> None:
+async def cleanup_spool() -> None:
     """Remove temporary source after crashes; uploads have a one-hour hard TTL."""
     settings.spool_dir.mkdir(parents=True, exist_ok=True)
     cutoff = time.time() - 3600
@@ -183,21 +183,3 @@ async def cleanup_spool(ctx: dict) -> None:
             timestamp = job.updated_at.replace(tzinfo=timezone.utc) if job.updated_at.tzinfo is None else job.updated_at
             if timestamp.timestamp() < cutoff:
                 update_job(job.id, 0, "Import expired. Please import the repository again.", "failed")
-
-
-async def worker_startup(ctx: dict):
-    from .db import init_db
-    init_db()
-    await cleanup_spool(ctx)
-
-
-class WorkerSettings:
-    from arq.connections import RedisSettings
-    from arq import cron
-    functions = [process_import]
-    redis_settings = RedisSettings.from_dsn(settings.redis_url)
-    max_jobs = 1
-    job_timeout = 600
-    max_tries = 1
-    on_startup = worker_startup
-    cron_jobs = [cron(cleanup_spool, minute={0, 15, 30, 45})]

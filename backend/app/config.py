@@ -1,4 +1,4 @@
-"""Environment settings shared by the API and background worker."""
+"""Environment settings shared by the API and the cloud extractor."""
 from pathlib import Path
 
 from typing import Literal
@@ -8,8 +8,8 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
     database_url: str = "sqlite:///./.data/codelingo.db"
-    redis_url: str = "redis://localhost:6379/0"
-    job_mode: Literal["inline", "arq", "github_actions"] = "inline"
+    # inline: dev, CI and Compose; github_actions: managed cloud (ADR 0004).
+    job_mode: Literal["inline", "github_actions"] = "inline"
     api_key: str = "local-development-key"
     spool_dir: Path = Path(".data/uploads")
     dictionary_online: bool = False

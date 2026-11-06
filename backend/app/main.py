@@ -15,8 +15,6 @@ from typing import Annotated, Literal
 from zoneinfo import ZoneInfo
 
 import genanki
-from arq import create_pool
-from arq.connections import RedisSettings
 from fastapi import BackgroundTasks, Depends, FastAPI, File, Header, HTTPException, UploadFile
 from fastapi.responses import FileResponse, Response
 from starlette.background import BackgroundTask
@@ -40,12 +38,12 @@ async def lifespan(app: FastAPI):
             manifest = plugin.manifest
             db.merge(Plugin(id=manifest.id, version=manifest.version, skills=[s.value for s in manifest.skills], services=manifest.services))
     settings.spool_dir.mkdir(parents=True, exist_ok=True)
-    await cleanup_spool({})
+    await cleanup_spool()
     async def maintenance():
         while True:
             await asyncio.sleep(300)
             try:
-                await cleanup_spool({})
+                await cleanup_spool()
             except Exception:
                 # No keep-alive traffic; the task stops when the host sleeps.
                 pass
@@ -201,20 +199,8 @@ async def dispatch(job: ImportJob, background: BackgroundTasks):
             update_job(job.id, 0, "Cloud extractor unavailable. Check the GitHub Actions token, repository and workflow.", "failed")
             (settings.spool_dir / f"{job.id}.zip").unlink(missing_ok=True)
             raise HTTPException(503, "Cloud extractor unavailable. Check GitHub Actions configuration.")
-    elif settings.job_mode == "arq":
-        try:
-            redis = await create_pool(RedisSettings.from_dsn(settings.redis_url))
-            try:
-                await redis.enqueue_job("process_import", job.id, _job_id=job.id)
-            finally:
-                await redis.aclose()
-        except Exception:
-            from .imports import update_job
-            update_job(job.id, 0, "Job queue unavailable. Check Redis and retry the import.", "failed")
-            (settings.spool_dir / f"{job.id}.zip").unlink(missing_ok=True)
-            raise HTTPException(503, "Job queue unavailable")
     else:
-        background.add_task(process_import, {}, job.id)
+        background.add_task(process_import, job.id)
 
 
 @app.post("/imports/zip", status_code=202)

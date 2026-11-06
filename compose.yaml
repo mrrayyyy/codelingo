@@ -13,22 +13,11 @@ services:
       timeout: 5s
       retries: 15
     restart: unless-stopped
-  redis:
-    image: redis:7-alpine
-    command: [redis-server, --appendonly, 'yes']
-    volumes: [redis-data:/data]
-    healthcheck:
-      test: [CMD, redis-cli, ping]
-      interval: 5s
-      timeout: 3s
-      retries: 10
-    restart: unless-stopped
   api:
     build: {context: ., dockerfile: backend/Dockerfile}
-    environment: &backend-env
+    environment:
       DATABASE_URL: postgresql+psycopg://codelingo:${POSTGRES_PASSWORD}@db:5432/codelingo
-      REDIS_URL: redis://redis:6379/0
-      JOB_MODE: arq
+      JOB_MODE: inline
       SPOOL_DIR: /spool
       API_KEY: ${API_KEY:?Set API_KEY in .env}
       TIMEZONE: ${TIMEZONE:-Asia/Ho_Chi_Minh}
@@ -41,20 +30,11 @@ services:
     volumes: [source-spool:/spool]
     depends_on:
       db: {condition: service_healthy}
-      redis: {condition: service_healthy}
     healthcheck:
       test: [CMD, python, -c, 'import os, urllib.request; urllib.request.urlopen(urllib.request.Request("http://localhost:8000/health", headers={"X-API-Key":os.environ["API_KEY"]}))']
       interval: 10s
       timeout: 5s
       retries: 15
-    restart: unless-stopped
-  worker:
-    build: {context: ., dockerfile: backend/Dockerfile}
-    command: [arq, app.imports.WorkerSettings]
-    environment: *backend-env
-    volumes: [source-spool:/spool]
-    depends_on:
-      api: {condition: service_healthy}
     restart: unless-stopped
   web:
     build: {context: ., dockerfile: frontend/Dockerfile}
@@ -67,5 +47,4 @@ services:
     restart: unless-stopped
 volumes:
   postgres-data:
-  redis-data:
   source-spool:
