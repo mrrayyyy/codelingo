@@ -18,4 +18,4 @@ Chủ dự án xem xét quyết định có nên tiếp tục duy trì chế đ�
 - Nếu giữ: không cần hành động gì, chuyển mục này sang `da_huy` kèm theo lý do.
 
 ## Giải quyết
-2026-11-06: chủ dự án chọn bỏ ARQ/Redis, giữ `inline` + `github_actions`, Compose rút gọn còn `db` + `api` + `web`. Ghi thành [ADR 0004](../../quyet_dinh/0004_bo_che_do_arq_redis.md); thực hiện trong ticket [20261106_bo_che_do_arq_redis](../../cong_viec/san_sang/20261106_bo_che_do_arq_redis.md).
+2026-11-06: chủ dự án chọn bỏ ARQ/Redis, giữ `inline` + `github_actions`, Compose rút gọn còn `db` + `api` + `web`. Ghi thành [ADR 0004](../../quyet_dinh/0004_bo_che_do_arq_redis.md); thực hiện trong ticket [20261106_bo_che_do_arq_redis](../../cong_viec/dang_lam/20261106_bo_che_do_arq_redis.md).

@@ -16,4 +16,4 @@ Chạy lệnh `.venv/bin/python -m pytest backend/tests -q` vào ngày 2026-11-0
 Kiểm tra ghi chú phát hành (release notes) của Starlette để xem phương án thay thế chuẩn, ghim hoặc nâng cấp phiên bản trong `backend/pyproject.toml` và `backend/requirements.lock`, xác nhận cảnh báo biến mất và các bài test vẫn vượt qua bình thường.
 
 ## Giải quyết
-2026-11-06: gộp vào ticket [20261106_bo_che_do_arq_redis](../../cong_viec/san_sang/20261106_bo_che_do_arq_redis.md) vì cùng sửa `backend/pyproject.toml` và sinh lại `backend/requirements.lock`.
+2026-11-06: gộp vào ticket [20261106_bo_che_do_arq_redis](../../cong_viec/dang_lam/20261106_bo_che_do_arq_redis.md) vì cùng sửa `backend/pyproject.toml` và sinh lại `backend/requirements.lock`.
