@@ -28,6 +28,7 @@ Cập nhật 2026-11-06: chủ đề hội thoại dùng chung 4 tình huống c
 - [ ] Kiểm tra các giọng TTS Groq khả dụng (tên giọng, số giọng) để gán giọng khác nhau cho từng người nói; ghi ngày tra cứu
 - [ ] Quyết định phát audio: sinh audio từng câu rồi client phát tuần tự (đơn giản, không cần ghép WAV) hay ghép một file phía server; ghi lý do
 ### Backend
+- [ ] Ngân sách TTS: Groq Orpheus TTS: bảng giới hạn gốc (tra 2026-11-06, xem `docs/trien_khai_cloud.md`) chỉ 100 request/ngày, 3.600 token/ngày, và model đang là Preview; một hội thoại 2–3 người có thể dùng hết hạn mức ngày. Mặc định phát bằng `speechSynthesis` với các giọng hệ thống khác nhau cho từng người nói; Groq TTS là tùy chọn khi còn hạn mức. Ghi lựa chọn cuối cùng vào nhật ký thực hiện
 - [ ] Plugin `listening.meeting` (`backend/app/plugins.py` hoặc module riêng): LLM sinh JSON `{scenario, speakers[2..3], lines[{speaker, text}], questions[3]{type: gist|detail|attitude, choices, answer}, cloze{sentence, answer}}` xoay quanh 3–5 từ/cụm đến hạn; kiểm tra schema chặt, đáp án lưu phía server như các plugin khác
 - [ ] Endpoint audio từng câu `/practice/{exercise_id}/audio?line=N` với cache tạm trên đĩa (TTL, giới hạn dung lượng), xóa bởi `cleanup_spool`
 - [ ] Chấm điểm tất định: trắc nghiệm so khớp đáp án; điền từ so khớp lemma/không phân biệt hoa thường

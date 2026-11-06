@@ -26,6 +26,7 @@ Cập nhật 2026-11-06: chủ dự án chốt phiên học **khoảng 10 phút*
 - [ ] Đọc tài liệu manifest/PWA và metadata của bản Next.js đang dùng trong `frontend/node_modules/next/dist/docs/` (bản này khác dữ liệu huấn luyện, xem `frontend/AGENTS.md`)
 - [ ] Lấy số đo khởi động nguội từ nhật ký của ticket triển khai cloud
 ### Backend
+- [ ] Giọng đọc dự phòng: Groq Orpheus TTS: bảng giới hạn gốc (tra 2026-11-06, xem `docs/trien_khai_cloud.md`) chỉ 100 request/ngày, 3.600 token/ngày, và model đang là Preview. Bài nghe/đọc to trong phiên học dùng `speechSynthesis` (Web Speech API) của trình duyệt khi TTS Groq chưa cấu hình, trả 429 hoặc hết hạn mức; hiển thị rõ nguồn giọng đọc
 - [ ] Endpoint `GET /session/today` (router `backend/app/routes/session.py`): trả về tối đa 15 thẻ đến hạn, 1 bài nghe, 1 bài nói theo danh sách plugin cấu hình được (`session_listening_plugin`, `session_speaking_plugin` trong `config.py`, mặc định `dictation` / `read_aloud`)
 - [ ] Ghi nhận thời lượng: thêm cột `duration_ms` vào `attempts` (migration Alembic) và gửi kèm từ frontend; thẻ ôn tập dùng thời gian giữa lúc lật và lúc đánh giá
 - [ ] Endpoint thống kê 7 ngày: số phút và số lượt theo kỹ năng (`speaking | listening | reading | writing | vocabulary`) theo múi giờ `settings.timezone`

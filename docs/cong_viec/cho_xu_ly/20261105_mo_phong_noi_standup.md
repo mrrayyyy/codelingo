@@ -29,6 +29,7 @@ Cập nhật 2026-11-06: chủ dự án chọn cả 4 tình huống, làm theo t
 - [ ] Đo độ trễ thực tế của một vòng STT → LLM → TTS trên Groq (từ ticket triển khai cloud); đặt mục tiêu < 6 giây mỗi lượt, nếu không đạt thì trả văn bản trước, audio sau
 - [ ] Kiểm tra ghi âm `MediaRecorder` trên Safari iOS và Chrome Android (định dạng hỗ trợ, quyền micro trong PWA); chọn định dạng gửi lên `/speech/transcribe`
 ### Backend
+- [ ] Ngân sách TTS: Groq Orpheus TTS: bảng giới hạn gốc (tra 2026-11-06, xem `docs/trien_khai_cloud.md`) chỉ 100 request/ngày, 3.600 token/ngày, và model đang là Preview. Câu hỏi và câu diễn đạt tự nhiên mặc định đọc bằng `speechSynthesis` của trình duyệt; TTS Groq chỉ dùng khi còn hạn mức (đếm theo ngày trong DB, tôn trọng `retry-after`); văn bản luôn hiển thị nên phiên luyện không bị chặn bởi TTS
 - [ ] Dữ liệu kịch bản `backend/app/data/kich_ban_noi/{standup,interview,code_review,demo}.json`: vai của app, mục tiêu, câu hỏi mở đầu, gợi ý câu hỏi tiếp theo, cụm từ mục tiêu (liên kết `cum_tu_cong_so.json`)
 - [ ] Bảng `speaking_sessions` (`id`, `user_id`, `scenario`, `turns` JSON chứa transcript và nhận xét, `created_at`); **không** lưu audio. Migration Alembic
 - [ ] Thêm cột `bio` (giới thiệu ngắn, tùy chọn) vào hồ sơ người dùng để cá nhân hóa kịch bản phỏng vấn; hiển thị rõ nội dung này được gửi tới LLM
