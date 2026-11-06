@@ -51,6 +51,7 @@ Cập nhật 2026-11-06: làm **sau** [ticket bỏ ARQ/Redis](../hoan_thanh/2026
 - 2026-11-06: push `adba75e`, `f7819de`; CI xanh, job `migrations` chạy upgrade → check → downgrade → upgrade → check trên PostgreSQL 17 thành công (https://github.com/mrrayyyy/codelingo/actions/runs/42159839436). Đóng ticket.
 
 ## Sai lệch
+Không còn tồn đọng cần ghi vào sổ nhật ký. Các thay đổi phạm vi đã thực hiện:
 - Migration nằm trong `backend/app/migrations/` thay vì `backend/alembic/` như kế hoạch: thư mục này tự đi theo `COPY backend/app ./app` vào cả `Dockerfile.cloud` lẫn `backend/Dockerfile`, không phải sửa Dockerfile hay khai báo package data.
 - Thêm xử lý giới hạn phản chiếu UNIQUE của SQLite (ngoài kế hoạch), cần để nhận DB cũ đúng.
 - Tiếp nối ở ticket triển khai cloud: Neon khuyến nghị dùng kết nối trực tiếp cho migration, nên biến tùy chọn `MIGRATION_DATABASE_URL` được thêm ở ticket đó.
