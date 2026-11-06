@@ -8,7 +8,7 @@ opened: 2026-11-06
 
 # Trang demo công khai với dữ liệu mẫu cho portfolio
 
-**Bị chặn bởi (Blocked by):** [Triển khai cloud](../san_sang/20261105_trien_khai_cloud_render_neon_groq.md), [Tách router API và `get_current_user`](../san_sang/20261106_tach_router_api.md), [Hệ thống thiết kế giao diện](20261106_he_thong_thiet_ke_giao_dien.md).
+**Bị chặn bởi (Blocked by):** [Triển khai cloud](../dang_lam/20261105_trien_khai_cloud_render_neon_groq.md), [Tách router API và `get_current_user`](../san_sang/20261106_tach_router_api.md), [Hệ thống thiết kế giao diện](20261106_he_thong_thiet_ke_giao_dien.md).
 
 ## Ngữ cảnh
 Chủ dự án chốt ngày 2026-11-06: CodeLingo có thể thành portfolio khi ứng tuyển, nên cần một link demo mà nhà tuyển dụng bấm thử được **không cần mật khẩu**, chạy trên dữ liệu mẫu. Bản thật của chủ dự án nằm sau Basic Auth (`WORKSPACE_PASSWORD`) và chứa lịch sử học cá nhân, nên demo tuyệt đối không được đọc hay ghi vào dữ liệu đó.

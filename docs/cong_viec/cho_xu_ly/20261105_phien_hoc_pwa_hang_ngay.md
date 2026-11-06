@@ -8,7 +8,7 @@ opened: 2026-11-05
 
 # PWA có thể cài đặt và phiên học 10 phút mỗi ngày
 
-**Bị chặn bởi (Blocked by):** [Triển khai cloud](../san_sang/20261105_trien_khai_cloud_render_neon_groq.md) (cần có URL đã triển khai và đo lường thời gian khởi động nguội thực tế) và [Tách nhỏ giao diện workspace UI](../san_sang/20261105_tach_giao_dien_workspace.md), [Hệ thống thiết kế giao diện](20261106_he_thong_thiet_ke_giao_dien.md).
+**Bị chặn bởi (Blocked by):** [Triển khai cloud](../dang_lam/20261105_trien_khai_cloud_render_neon_groq.md) (cần có URL đã triển khai và đo lường thời gian khởi động nguội thực tế) và [Tách nhỏ giao diện workspace UI](../san_sang/20261105_tach_giao_dien_workspace.md), [Hệ thống thiết kế giao diện](20261106_he_thong_thiet_ke_giao_dien.md).
 
 ## Ngữ cảnh
 Các bài luyện tập hiện đang nằm rải rác ở các trang riêng biệt; để hình thành thói quen học hàng ngày cần có một nút bấm duy nhất. Gói miễn phí của Render sẽ tự động ngủ khi nhàn rỗi, khiến lần mở app đầu tiên trong ngày có thể bị chậm. Một ứng dụng PWA có thể cài đặt lên màn hình chính với vỏ tĩnh (static shell) được cache sẵn sẽ hiển thị màn hình học tập ngay lập tức kèm thông báo trạng thái "đang đánh thức server" rõ ràng thay vì một trang trắng đơ.

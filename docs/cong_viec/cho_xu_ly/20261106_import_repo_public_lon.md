@@ -9,7 +9,7 @@ opened: 2026-11-06
 
 # Import được repo GitHub public lớn (repo nổi tiếng) và chỉ một thư mục con
 
-**Bị chặn bởi (Blocked by):** [Triển khai cloud](../san_sang/20261105_trien_khai_cloud_render_neon_groq.md) (cần số đo thực tế của runner GitHub Actions).
+**Bị chặn bởi (Blocked by):** [Triển khai cloud](../dang_lam/20261105_trien_khai_cloud_render_neon_groq.md) (cần số đo thực tế của runner GitHub Actions).
 
 ## Ngữ cảnh
 Ngày 2026-11-06 chủ dự án chọn nguồn học chính là **repo GitHub public nổi tiếng** và repo của chính mình. Hiện tại `download_github` (`backend/app/imports.py`) tải `codeload.github.com/<owner>/<repo>/zip/HEAD` và dừng khi vượt `max_upload_bytes` = 20 MiB; `unpack_archive` giới hạn 5.000 file và 50 MiB sau giải nén (`backend/app/config.py`); callback `/cloud/jobs/{id}/complete` nhận tối đa 500 mục. Các repo nổi tiếng thường lớn hơn nhiều mức này, nên hôm nay hầu như không import được. Ở chế độ `github_actions`, việc tải và trích xuất chạy trên runner (`scripts/cloud_extract.py`), không chạy trên Render, nên có thể nới giới hạn riêng cho runner mà không làm nặng web service miễn phí.

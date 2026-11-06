@@ -9,7 +9,7 @@ opened: 2026-11-05
 
 # Luyện nghe các cuộc họp kỹ thuật
 
-**Bị chặn bởi (Blocked by):** [Triển khai cloud](../san_sang/20261105_trien_khai_cloud_render_neon_groq.md) (yêu cầu dịch vụ TTS và LLM) và [Tách nhỏ giao diện workspace UI](../san_sang/20261105_tach_giao_dien_workspace.md).
+**Bị chặn bởi (Blocked by):** [Triển khai cloud](../dang_lam/20261105_trien_khai_cloud_render_neon_groq.md) (yêu cầu dịch vụ TTS và LLM) và [Tách nhỏ giao diện workspace UI](../san_sang/20261105_tach_giao_dien_workspace.md).
 
 ## Ngữ cảnh
 Kỹ năng nghe là một kỹ năng ưu tiên hàng đầu; hiện tại hệ thống chỉ mới có bài tập chép chính tả câu đơn lẻ. Các đoạn hội thoại mô phỏng cuộc họp ngắn (2 hoặc 3 người nói, dài 45–90 giây) được xây dựng tự động xung quanh các từ vựng và cụm từ cần ôn tập của người học sẽ giúp rèn luyện khả năng theo dõi thảo luận thực tế.

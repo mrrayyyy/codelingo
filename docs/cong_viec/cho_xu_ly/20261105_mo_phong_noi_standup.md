@@ -9,7 +9,7 @@ opened: 2026-11-05
 
 # Mô phỏng nói: standup, phỏng vấn xin việc, code review, demo
 
-**Bị chặn bởi (Blocked by):** [Triển khai cloud](../san_sang/20261105_trien_khai_cloud_render_neon_groq.md) (yêu cầu cấu hình Groq STT/LLM/TTS đang hoạt động) và [Tách nhỏ giao diện workspace UI](../san_sang/20261105_tach_giao_dien_workspace.md).
+**Bị chặn bởi (Blocked by):** [Triển khai cloud](../dang_lam/20261105_trien_khai_cloud_render_neon_groq.md) (yêu cầu cấu hình Groq STT/LLM/TTS đang hoạt động) và [Tách nhỏ giao diện workspace UI](../san_sang/20261105_tach_giao_dien_workspace.md).
 
 ## Ngữ cảnh
 Kỹ năng nói trong các cuộc họp là mục tiêu kỹ năng hàng đầu của chủ dự án. Hiện tại ứng dụng chỉ có bài tập đọc to (read-aloud), chấm theo độ tương đồng văn bản chuyển đổi. Một bài tập nhập vai tương tác ngắn theo từng lượt sử dụng các bộ điều hợp hiện có: ứng dụng (đóng vai scrum master hoặc reviewer) đặt câu hỏi qua TTS; chủ dự án trả lời bằng giọng nói; STT nhận dạng âm thanh; LLM trả về nhận xét và một phiên bản diễn đạt tự nhiên hơn, để chủ dự án luyện nói nhại lại (shadowing).

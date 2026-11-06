@@ -62,7 +62,7 @@ Trạng thái của từng ticket chính là thư mục chứa nó trong `docs/c
 ### Giai đoạn 1 — Chạy thật và dùng hằng ngày (ước lượng 1–1,5 tuần) · P1
 | # | Ticket | Lý do |
 | :--- | :--- | :--- |
-| 3 | [Triển khai Render + Neon + Groq](../cong_viec/san_sang/20261105_trien_khai_cloud_render_neon_groq.md) | Khắc phục thiếu sót 1; cần chủ dự án tạo tài khoản và secret (`[user]`) |
+| 3 | [Triển khai Render + Neon + Groq](../cong_viec/dang_lam/20261105_trien_khai_cloud_render_neon_groq.md) | Khắc phục thiếu sót 1; cần chủ dự án tạo tài khoản và secret (`[user]`) |
 | 4 | [Tách router API, `get_current_user`](../cong_viec/san_sang/20261106_tach_router_api.md) | Nền cho mọi route mới và cho đa người dùng/demo |
 | 5 | [Tách nhỏ giao diện workspace](../cong_viec/san_sang/20261105_tach_giao_dien_workspace.md) | Nền cho mọi màn hình mới |
 | 6 | [Hệ thống thiết kế giao diện](../cong_viec/cho_xu_ly/20261106_he_thong_thiet_ke_giao_dien.md) | Mobile-first, dark mode, mặc định tiếng Việt; mục tiêu portfolio |
