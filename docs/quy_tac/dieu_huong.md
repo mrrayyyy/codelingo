@@ -23,7 +23,7 @@ Nơi lưu trữ của từng loại thông tin và dữ kiện. Hãy tra cứu t
 | :--- | :--- |
 | HTTP API (toàn bộ các route) | `backend/app/main.py` |
 | Cấu hình và biến môi trường | `backend/app/config.py`, `.env.example`, `.env.cloud.example` |
-| Mô hình dữ liệu database | `backend/app/db.py` |
+| Mô hình dữ liệu database và migration | `backend/app/db.py`, `backend/app/migrations/`, [quy trình tạo migration](../quy_trinh/tao_migration.md) |
 | Đường ống trích xuất từ vựng (Tree-sitter → spaCy → xếp hạng) | `backend/app/extraction.py`, `backend/app/lexicon.py` |
 | Quản lý tác vụ import, an toàn file nén, dọn file tạm | `backend/app/imports.py` |
 | Trích xuất từ xa trên GitHub Actions | `backend/app/cloud_jobs.py`, `scripts/cloud_extract.py`, `.github/workflows/extract.yml` |

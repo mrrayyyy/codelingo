@@ -43,6 +43,8 @@ flowchart LR
 
 ### Sơ đồ quan hệ thực thể (ERD)
 
+Schema được quản lý bằng Alembic (`backend/app/migrations/`, revision cơ sở `0001_initial`); API tự `upgrade head` khi khởi động. Tên constraint theo `NAMING_CONVENTION` trong `backend/app/db.py` để SQLite và PostgreSQL giống nhau. Mọi thay đổi schema theo [quy trình tạo migration](quy_trinh/tao_migration.md).
+
 ```mermaid
 erDiagram
   users ||--o{ repos : imports

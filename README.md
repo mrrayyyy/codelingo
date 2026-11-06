@@ -59,6 +59,8 @@ npm --prefix frontend ci
 .venv/bin/python scripts/dev.py
 ```
 
+Schema database được quản lý bằng Alembic: API tự chạy `upgrade head` khi khởi động trên cả SQLite, Compose và Neon. Khi sửa model trong `backend/app/db.py`, tạo revision mới theo quy trình [tạo migration](docs/quy_trinh/tao_migration.md).
+
 File lockfile sẽ cài sẵn model tiếng Anh spaCy. Nếu cài trực tiếp từ `pyproject.toml`, hãy chạy thêm lệnh `.venv/bin/python -m spacy download en_core_web_sm`. Các dịch vụ cục bộ lắng nghe tại http://localhost:3000 và http://127.0.0.1:8000. Bấm Ctrl-C để dừng cả hai. Lệnh khởi chạy dev sẽ nạp file `.env` gốc và chia sẻ API key với Next.js. Nếu không có `.env`, hệ thống dùng key dev mặc định; Compose yêu cầu cấu hình secret rõ ràng.
 
 ## Các tính năng đã triển khai
@@ -72,7 +74,7 @@ File lockfile sẽ cài sẵn model tiếng Anh spaCy. Nếu cài trực tiếp 
 - Giao diện song ngữ Anh/Việt, cài đặt học tập, xuất dữ liệu ra file CSV và bộ thẻ Anki `.apkg`, API xóa ngữ cảnh repository và xóa từ vựng. Xóa một repository vẫn giữ lại từ vựng đã học và lịch ôn tập của từ đó.
 - Định nghĩa từ vựng ngoại tuyến có sẵn kèm phiên âm IPA; hỗ trợ tùy chọn Free Dictionary API (chỉ gửi từ gốc lemma). Endpoint `POST /vocab/{id}/dictionary` làm giàu thêm dữ liệu một từ. Các từ không rõ nghĩa được hiển thị là "chưa có thông tin" thay vì sinh nội dung bịa đặt.
 
-Phạm vi còn lại cho v1: Đăng nhập GitHub OAuth cho repo riêng tư; bóc tách ngữ cảnh từ git-log / pull request; sinh đoạn văn đọc hiểu hoàn chỉnh kèm câu hỏi; bài tập điền từ khi nghe; chấm điểm phát âm theo âm vị; kỹ thuật nhại giọng (shadowing) / nói tự do; mô phỏng standup meeting / phỏng vấn đa lượt; đa dạng hóa biến thể bài tập viết; tập ngữ liệu CEFR chuẩn hóa; cơ chế cài đặt và cách ly plugin; migration schema bằng Alembic.
+Phạm vi còn lại cho v1: Đăng nhập GitHub OAuth cho repo riêng tư; bóc tách ngữ cảnh từ git-log / pull request; sinh đoạn văn đọc hiểu hoàn chỉnh kèm câu hỏi; bài tập điền từ khi nghe; chấm điểm phát âm theo âm vị; kỹ thuật nhại giọng (shadowing) / nói tự do; mô phỏng standup meeting / phỏng vấn đa lượt; đa dạng hóa biến thể bài tập viết; tập ngữ liệu CEFR chuẩn hóa; cơ chế cài đặt và cách ly plugin.
 
 ## Các dịch vụ cục bộ tùy chọn — thứ tự kích hoạt
 
@@ -114,7 +116,8 @@ backend/app/
   extraction.py    đường ống: tree-sitter → spaCy → bộ lọc → xếp hạng
   lexicon.py       định nghĩa biên soạn thủ công và dữ liệu gốc ước lượng CEFR
   imports.py       giới hạn file nén, vòng đời mã nguồn, tác vụ import và dọn file tạm
-  db.py            mô hình quan hệ và schema ban đầu
+  db.py            mô hình quan hệ, tự migrate khi khởi động
+  migrations/      môi trường và các revision Alembic (backend/alembic.ini dùng cho CLI)
   srs.py           bộ điều hợp thuật toán lặp lại ngắt quãng FSRS
   plugins.py       bài tập đọc hiểu, chính tả, đọc to, viết, phản hồi code review
   adapters.py      bộ điều hợp Piper, Whisper, Ollama, từ điển offline/online
