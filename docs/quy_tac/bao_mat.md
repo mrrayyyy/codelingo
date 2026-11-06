@@ -6,8 +6,8 @@
 
 - API keys, tokens, mật khẩu, chuỗi kết nối chứa thông tin xác thực (`.env` đã được đưa vào git-ignore; luôn duy trì trạng thái này);
 - URL ứng dụng đã triển khai đi kèm với bất kỳ thông tin nào dùng để xác thực truy cập vào ứng dụng đó;
-- Từ vựng thực tế, các câu ngữ cảnh hoặc đoạn trích mã nguồn được bóc tách từ repository riêng tư hoặc kho mã nguồn của công ty nơi chủ dự án làm việc;
-- Tên các hệ thống nội bộ, tên host máy chủ, khách hàng hoặc tên đồng nghiệp tại nơi làm việc của chủ dự án — áp dụng cho cả ticket và các mục nhật ký. Luôn mô tả khái quát (ví dụ: "một repository công việc").
+- Từ vựng thực tế, các câu ngữ cảnh hoặc đoạn trích mã nguồn được bóc tách từ repository riêng tư (không công khai);
+- Tên host máy chủ, địa chỉ nội bộ hoặc thông tin cá nhân của người khác — áp dụng cho cả ticket và các mục nhật ký. Luôn mô tả khái quát.
 
 Các khóa secret được lưu trong file `.env` ở môi trường cục bộ và trong phần cài đặt Secret của Render / GitHub Actions khi triển khai trên cloud. Việc thay đổi secret trên môi trường đám mây bắt buộc phải được phê duyệt trước ([thuc_thi.md](thuc_thi.md)). Tuyệt đối không bao giờ in giá trị secret ra màn hình chat, file log hay bất kỳ file nào.
 
@@ -22,6 +22,6 @@ Lệnh quét sẽ in ra các kết quả khớp và trả về mã thoát exit 1
 
 Nếu một bí mật thực tế vô tình bị push lên kho lưu trữ: trước tiên phải thu hồi/xoay vòng (rotate) khóa đó ngay lập tức (giá trị cũ đã bị lộ ngay khoảnh khắc nó xuất hiện công khai), sau đó làm sạch lịch sử git dưới dạng một hành động cần phê duyệt.
 
-## Mã nguồn công ty và nơi làm việc
+## Nguồn mã nguồn được import
 
-Cấu hình triển khai trên cloud gửi repository được import tới các runner của GitHub Actions, lưu các câu ngữ cảnh vào Neon, và có thể gửi văn bản bài tập tới Groq. Việc import mã nguồn mà chủ dự án không sở hữu bản quyền có thể vi phạm chính sách bảo mật của doanh nghiệp. Cho đến khi chủ dự án có quyết định khác ([bản ghi nhật ký](../nhat_ky/dang_mo/lo_hong_quy_trinh_20261105_bao_mat_ma_nguon_cong_ty.md)), các agent chỉ được phép import các kho mã nguồn công khai hoặc bộ mẫu đi kèm dự án.
+CodeLingo là dự án cá nhân (chủ dự án xác nhận ngày 2026-11-06). Nguồn import là repo GitHub **công khai** (repo nổi tiếng và repo của chính chủ dự án) cùng file ZIP do chủ dự án tự tải lên. Cấu hình cloud gửi repo được import tới runner GitHub Actions, lưu câu ngữ cảnh vào Neon và có thể gửi văn bản bài tập tới Groq, nên chỉ import nội dung được phép công khai. Agent chỉ tự import repo công khai hoặc bộ mẫu đi kèm dự án; import repo mà chủ dự án không sở hữu vẫn là thao tác cần phê duyệt ([thuc_thi.md](thuc_thi.md)).

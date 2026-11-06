@@ -1,8 +1,7 @@
 ---
 type: process-gap
-status: open
+status: cancelled
 discovered: 2026-11-05
-next_review: 2026-11-19
 source: product review in 20261105_khoi_tao_quy_trinh_tai_lieu_agent
 severity: high
 owner: user
@@ -20,3 +19,6 @@ Chủ dự án xem xét và lựa chọn một trong các phương án:
 3. Bổ sung tính năng import "chỉ dán văn bản xuôi" (chỉ nhập commit message, nội dung PR do chính chủ dự án viết) mà không bao giờ tải lên toàn bộ mã nguồn.
 
 Cho đến khi có quyết định chính thức, quy định tại [bao_mat.md](../../quy_tac/bao_mat.md) giới hạn các agent chỉ được import các repository công khai hoặc bộ mẫu đi kèm.
+
+## Lý do hủy
+2026-11-06: tiền đề của mục này sai. Chủ dự án xác nhận CodeLingo là dự án cá nhân (học cho bản thân, có thể dùng làm portfolio hoặc mở cho người dùng khác), **không có mã nguồn công ty nào được đưa vào**. Nguồn import là repo GitHub công khai (repo nổi tiếng và repo của chính chủ dự án) cùng file ZIP; không cần hỗ trợ repo private. Quy tắc import của agent được cập nhật trong [bao_mat.md](../../quy_tac/bao_mat.md).
