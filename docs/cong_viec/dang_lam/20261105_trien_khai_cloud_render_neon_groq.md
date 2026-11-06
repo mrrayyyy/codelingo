@@ -30,7 +30,7 @@ Cập nhật 2026-11-06: chủ dự án xác nhận dùng Render + Neon + Groq g
 - [x] Viết checklist từng bước có ảnh/tên nút cho phần `[user]` vào `docs/trien_khai_cloud.md` để chủ dự án làm theo nhanh
 - [x] Chọn cách sao lưu: cơ chế khôi phục có sẵn của Neon theo gói free (nếu có) và/hoặc `pg_dump` thủ công trước mỗi migration. **Không** đưa bản dump lên artifact của GitHub Actions vì repo công khai
 - [x] (phát sinh) Neon khuyến nghị kết nối trực tiếp cho schema migration: thêm biến tùy chọn `MIGRATION_DATABASE_URL` (`config.py`, `db.migration_engine()`, `cloud_start.py`, `render.yaml`, `.env.cloud.example`) + test
-- [ ] Push phần chuẩn bị; CI (`test`, `migrations`, `cloud-image`) xanh
+- [x] Push phần chuẩn bị; CI (`test`, `migrations`, `cloud-image`) xanh: https://github.com/mrrayyyy/codelingo/actions/runs/42160231697
 ### Tài khoản và khóa bí mật
 - [ ] `[user]` Tạo project trên Neon (region gần Singapore); lấy cả chuỗi pooled và chuỗi trực tiếp; giữ kín
 - [ ] `[user]` Tạo fine-grained GitHub token chỉ cho repo `mrrayyyy/codelingo`, quyền Actions: write
@@ -61,5 +61,7 @@ Cập nhật 2026-11-06: chủ dự án xác nhận dùng Render + Neon + Groq g
 - 2026-11-06: thêm job CI `cloud-image`: build `Dockerfile.cloud`, kiểm tra image chứa `app/migrations/versions/0001_initial.py`, và `cloud_start.py` thoát lỗi khi thiếu secret.
 - 2026-11-06: viết lại `docs/trien_khai_cloud.md`: dữ kiện free tier có ngày, checklist 6 bước cho chủ dự án (Neon 2 chuỗi kết nối, fine-grained token, Groq, Render Blueprint, GitHub secrets, mở app), mục sao lưu.
 - 2026-11-06: hạn mức TTS Groq rất thấp → thêm mục giọng đọc dự phòng (Web Speech API) vào kế hoạch ticket PWA, mô phỏng nói và luyện nghe.
+
+- 2026-11-06: push `b268cdc`, `ab35ea5`; CI xanh cả 3 job (https://github.com/mrrayyyy/codelingo/actions/runs/42160231697). Phần chuẩn bị của agent xong; **dừng ở các mục `[user]`** (tạo tài khoản Neon/Render/Groq, token GitHub, secret).
 
 ## Sai lệch
