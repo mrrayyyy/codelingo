@@ -11,7 +11,7 @@ opened: 2026-11-05
 ## Ngữ cảnh
 Schema cơ sở dữ liệu hiện tại được khởi tạo bằng SQLAlchemy `create_all` (README đã lưu ý: "không dùng làm chiến lược nâng cấp schema"). Giai đoạn 2 của lộ trình sẽ thêm các cột dữ liệu mới (nghĩa tiếng Việt, cụm từ vựng). Một khi lịch sử học tập đã được lưu trữ trên Neon, việc thay đổi schema mà không có công cụ migration sẽ đồng nghĩa với việc phải chạy SQL thủ công hoặc đối mặt nguy cơ mất dữ liệu. Thực hiện việc này trước lần deploy đầu tiên giúp giữ rủi ro ở mức `routine`; sau khi đã deploy, mọi migration đều thuộc diện `irreversible`.
 
-Cập nhật 2026-11-06: làm **sau** [ticket bỏ ARQ/Redis](../dang_lam/20261106_bo_che_do_arq_redis.md) (Giai đoạn 0). Schema hiện đã có `user_id` trên các bảng chính; revision cơ sở phải giữ nguyên để sẵn sàng cho đa người dùng (chủ dự án chốt: chuẩn bị schema, chưa làm đăng nhập). Hiện `init_db()` (`backend/app/db.py`) gọi `create_all` rồi seed user `local-user`; test (`backend/tests/conftest.py`) dùng `Base.metadata.drop_all` + lifespan.
+Cập nhật 2026-11-06: làm **sau** [ticket bỏ ARQ/Redis](../hoan_thanh/20261106_bo_che_do_arq_redis.md) (Giai đoạn 0). Schema hiện đã có `user_id` trên các bảng chính; revision cơ sở phải giữ nguyên để sẵn sàng cho đa người dùng (chủ dự án chốt: chuẩn bị schema, chưa làm đăng nhập). Hiện `init_db()` (`backend/app/db.py`) gọi `create_all` rồi seed user `local-user`; test (`backend/tests/conftest.py`) dùng `Base.metadata.drop_all` + lifespan.
 
 ## Tiêu chí chấp nhận
 - [ ] Lệnh `alembic upgrade head` khởi tạo schema hiện tại thành công trên cả SQLite trống và PostgreSQL trống.

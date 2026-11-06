@@ -22,4 +22,4 @@
 ## Hệ quả
 - Ít code, ít dependency và ít tài liệu phải đồng bộ hơn; `dispatch` chỉ còn hai nhánh.
 - Import ở chế độ `inline` chạy trong tiến trình API và được tuần tự hóa bằng `_import_lock`. Đủ cho một người dùng; nếu sau này mở cho nhiều người dùng mà import trên Actions không đáp ứng được thì cần ADR mới.
-- Ticket thực hiện: [20261106_bo_che_do_arq_redis](../cong_viec/dang_lam/20261106_bo_che_do_arq_redis.md).
+- Ticket thực hiện: [20261106_bo_che_do_arq_redis](../cong_viec/hoan_thanh/20261106_bo_che_do_arq_redis.md).

@@ -56,7 +56,7 @@ Trạng thái của từng ticket chính là thư mục chứa nó trong `docs/c
 ### Giai đoạn 0 — Nền móng (ước lượng 2–3 ngày) · P1
 | # | Ticket | Lý do |
 | :--- | :--- | :--- |
-| 1 | [Bỏ ARQ/Redis, xử lý cảnh báo Starlette](../cong_viec/dang_lam/20261106_bo_che_do_arq_redis.md) | Gọn code và tài liệu trước khi khóa schema bằng migration |
+| 1 | [Bỏ ARQ/Redis, xử lý cảnh báo Starlette](../cong_viec/hoan_thanh/20261106_bo_che_do_arq_redis.md) | Gọn code và tài liệu trước khi khóa schema bằng migration |
 | 2 | [Alembic migrations](../cong_viec/dang_lam/20261105_migration_alembic.md) | Bắt buộc có trước khi dữ liệu thật được ghi vào Neon; tạo quy trình `tao_migration.md` cho mọi migration sau |
 
 ### Giai đoạn 1 — Chạy thật và dùng hằng ngày (ước lượng 1–1,5 tuần) · P1

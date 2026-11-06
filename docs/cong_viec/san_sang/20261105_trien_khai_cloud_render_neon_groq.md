@@ -13,7 +13,7 @@ Cấu hình triển khai trên đám mây ([ADR 0001](../../quyet_dinh/0001_uu_t
 
 Nên thực hiện sau ticket Alembic để schema đầu tiên trên cloud đã được quản lý bằng migration.
 
-Cập nhật 2026-11-06: chủ dự án xác nhận dùng Render + Neon + Groq gói miễn phí; thứ tự là [bỏ ARQ/Redis](../dang_lam/20261106_bo_che_do_arq_redis.md) → [Alembic](../dang_lam/20261105_migration_alembic.md) → ticket này. Nguồn import là repo GitHub công khai (repo nổi tiếng và repo của chính chủ dự án) cùng file ZIP; không cần token cho repo private.
+Cập nhật 2026-11-06: chủ dự án xác nhận dùng Render + Neon + Groq gói miễn phí; thứ tự là [bỏ ARQ/Redis](../hoan_thanh/20261106_bo_che_do_arq_redis.md) → [Alembic](../dang_lam/20261105_migration_alembic.md) → ticket này. Nguồn import là repo GitHub công khai (repo nổi tiếng và repo của chính chủ dự án) cùng file ZIP; không cần token cho repo private.
 
 ## Tiêu chí chấp nhận
 - [ ] Ứng dụng đã triển khai tải tốt sau lớp bảo vệ Basic Auth trên cả điện thoại và máy tính.

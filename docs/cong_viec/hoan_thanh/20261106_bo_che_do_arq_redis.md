@@ -18,7 +18,7 @@ Gộp luôn cảnh báo `StarletteDeprecationWarning` của test client vì cùn
 - [x] `job_mode` chỉ chấp nhận `inline | github_actions`; giá trị `arq` trong `.env` cũ gây lỗi cấu hình rõ ràng khi khởi động.
 - [x] `cleanup_spool` vẫn chạy định kỳ ở cả hai chế độ (đã có trong lifespan) và có test.
 - [x] `docker compose config` hợp lệ với 3 dịch vụ `db`, `api`, `web`.
-- [x] `pytest backend/tests -q` xanh, **không còn** `StarletteDeprecationWarning` (57 passed, 0 warning); CI trên `main` xanh — chờ run sau khi push.
+- [x] `pytest backend/tests -q` xanh, **không còn** `StarletteDeprecationWarning` (57 passed, 0 warning); CI trên `main` xanh ([run 42159360424](https://github.com/mrrayyyy/codelingo/actions/runs/42159360424)).
 - [x] README, `docs/kien_truc.md`, `docs/quy_tac/dieu_huong.md`, ADR 0001 (phần hệ quả) không còn mô tả ARQ/Redis như thành phần đang chạy.
 
 ## Kế hoạch
@@ -40,7 +40,7 @@ Gộp luôn cảnh báo `StarletteDeprecationWarning` của test client vì cùn
 - [x] Thêm test: `cleanup_spool` xóa file spool quá 1 giờ và đánh dấu job treo là `failed`
 - [x] `.venv/bin/python -m pytest backend/tests -q` → `57 passed in 2.24s`, 0 warning (trước đó: `53 passed, 1 warning`)
 - [x] `npm --prefix frontend run typecheck` sạch; `docker compose config -q` → exit 0; services `api, db, web`
-- [ ] Push; CI trên `main` xanh (dẫn link run)
+- [x] Push; CI trên `main` xanh: https://github.com/mrrayyyy/codelingo/actions/runs/42159360424 (commit `79b4a5d`, job `test`: success)
 ### Đồng bộ tài liệu
 - [x] README: mục Docker Compose (bỏ Redis, `logs -f api worker` → `logs -f api`), cây thư mục (`imports.py`, `compose.yaml`)
 - [x] `docs/kien_truc.md`: câu ngăn xếp công nghệ dòng 7, sơ đồ Mermaid (bỏ nút `Redis / ARQ` và `Python worker`, thay bằng background task/GitHub Actions), bảng cột mốc
@@ -55,5 +55,7 @@ Gộp luôn cảnh báo `StarletteDeprecationWarning` của test client vì cùn
 - 2026-11-06: `compose.yaml` còn `db`, `api` (`JOB_MODE: inline`), `web`; bỏ volume `redis-data`. `.env.example`, `.env.cloud.example`, Dockerfile, `scripts/` không có tham chiếu Redis/ARQ. `.env` cục bộ không đặt `JOB_MODE` (đã kiểm tra theo tên biến, không đọc giá trị).
 - 2026-11-06: thêm `backend/tests/test_jobs.py` (2 chế độ hợp lệ, `JOB_MODE=arq` bị `ValidationError`, `cleanup_spool` xóa file/thư mục quá 1 giờ, giữ file mới, chuyển job treo quá 1 giờ sang `failed`, giữ job đang chạy). `pytest` → `57 passed`, 0 warning.
 - 2026-11-06: đồng bộ README (Compose, tính năng, cây thư mục), `docs/kien_truc.md` (§1, sơ đồ, bảng cột mốc), `docs/quy_tac/dieu_huong.md`, ADR 0001 (ghi chú thay thế một phần bởi ADR 0004).
+- 2026-11-06: push `c449c18`, `79b4a5d`; CI xanh (run 42159360424). Đóng ticket.
 
 ## Sai lệch
+Không có thay đổi phạm vi. Thêm việc nhỏ ngoài kế hoạch gốc: gỡ cả `PyJWT` (chỉ `redis` cần) và cài lại gói editable để `pip check` sạch; ghi trong nhật ký thực hiện. Không còn tồn đọng nào cần ghi vào sổ nhật ký.
