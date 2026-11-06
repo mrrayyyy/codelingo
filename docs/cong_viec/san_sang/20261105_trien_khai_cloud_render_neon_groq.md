@@ -13,6 +13,8 @@ Cấu hình triển khai trên đám mây ([ADR 0001](../../quyet_dinh/0001_uu_t
 
 Nên thực hiện sau ticket Alembic để schema đầu tiên trên cloud đã được quản lý bằng migration.
 
+Cập nhật 2026-11-06: chủ dự án xác nhận dùng Render + Neon + Groq gói miễn phí; thứ tự là [bỏ ARQ/Redis](20261106_bo_che_do_arq_redis.md) → [Alembic](20261105_migration_alembic.md) → ticket này. Nguồn import là repo GitHub công khai (repo nổi tiếng và repo của chính chủ dự án) cùng file ZIP; không cần token cho repo private.
+
 ## Tiêu chí chấp nhận
 - [ ] Ứng dụng đã triển khai tải tốt sau lớp bảo vệ Basic Auth trên cả điện thoại và máy tính.
 - [ ] Quy trình import repo mẫu hoàn tất thông qua GitHub Actions; tính năng xem từ vựng và ôn tập flashcard hoạt động chuẩn xác.
@@ -21,21 +23,28 @@ Nên thực hiện sau ticket Alembic để schema đầu tiên trên cloud đã
 - [ ] File `docs/xac_minh.md` ghi nhận bằng chứng có gắn ngày tháng; các thông tin hạn mức gói miễn phí trong tài liệu hướng dẫn được tái xác minh và gắn ngày.
 
 ## Kế hoạch
-### Chuẩn bị
-- [ ] Tái xác minh các dữ kiện về gói miễn phí trong `docs/trien_khai_cloud.md` đối chiếu với tài liệu mới nhất của Render, Neon, GitHub, Groq; ghi rõ ngày tháng
-- [ ] Xác nhận các tên model Groq trong `.env.cloud.example` còn hoạt động; cập nhật lại nếu cần
-- [ ] Cấu hình build `Dockerfile.cloud` trong CI (thêm job kiểm tra) thay vì build cục bộ
+### Chuẩn bị (agent tự làm)
+- [ ] Tái xác minh các dữ kiện gói miễn phí trong `docs/trien_khai_cloud.md` (Render: thời gian ngủ, giờ chạy/tháng, RAM; Neon: dung lượng, compute, cơ chế sao lưu/khôi phục; GitHub Actions: phút chạy cho repo public; Groq: model, giới hạn request/token) theo tài liệu chính thức, ghi ngày tra cứu
+- [ ] Xác nhận các tên model Groq trong `backend/app/config.py` và `.env.cloud.example` còn hoạt động; cập nhật nếu cần
+- [ ] Thêm job CI build `Dockerfile.cloud` (chỉ build, không push) để phát hiện lỗi image trước khi Render build
+- [ ] Viết checklist từng bước có ảnh/tên nút cho phần `[user]` vào `docs/trien_khai_cloud.md` để chủ dự án làm theo nhanh
+- [ ] Chọn cách sao lưu: cơ chế khôi phục có sẵn của Neon theo gói free (nếu có) và/hoặc `pg_dump` thủ công trước mỗi migration. **Không** đưa bản dump lên artifact của GitHub Actions vì repo công khai
 ### Tài khoản và khóa bí mật
-- [ ] `[user]` Tạo project trên Neon; giữ kín chuỗi kết nối
-- [ ] `[user]` Tạo fine-grained GitHub token giới hạn quyền cho repo `mrrayyyy/codelingo`, quyền Actions: write
-- [ ] `[user]` Tạo dịch vụ trên Render từ blueprint `render.yaml`; nhập các biến môi trường secret trên bảng điều khiển Render
-- [ ] `[user]` Thêm secret `CODELINGO_URL` và `CODELINGO_API_KEY` vào phần GitHub Actions secrets của repo
-- [ ] `[user]` Tùy chọn: Nhập Groq API key trên Render nếu muốn dùng AI giọng nói/viết
-### Kiểm chứng
-- [ ] `[gate]` Thực hiện lần deploy đầu tiên; kiểm tra endpoint `/api/health`
-- [ ] Import repo mẫu từ đầu đến cuối; ôn tập thử một thẻ flashcard; restart dịch vụ; kiểm tra dữ liệu ôn tập vẫn còn
-- [ ] Đo lường thời gian khởi động nguội sau khi app ở trạng thái ngủ; ghi lại số liệu phục vụ ticket PWA
-- [ ] Đồng bộ tài liệu: xac_minh.md, hướng dẫn cloud; chuyển ticket `20261105_phien_hoc_pwa_hang_ngay.md` sang `san_sang/`
+- [ ] `[user]` Tạo project trên Neon (region gần Singapore); giữ kín chuỗi kết nối
+- [ ] `[user]` Tạo fine-grained GitHub token chỉ cho repo `mrrayyyy/codelingo`, quyền Actions: write
+- [ ] `[user]` Tạo dịch vụ trên Render từ blueprint `render.yaml`; nhập các biến môi trường secret (`DATABASE_URL`, `WORKSPACE_PASSWORD`, `GITHUB_ACTIONS_TOKEN`, `GITHUB_ACTIONS_REPO`)
+- [ ] `[user]` Thêm secret `CODELINGO_URL` và `CODELINGO_API_KEY` vào GitHub Actions secrets của repo
+- [ ] `[user]` Tạo Groq API key và nhập `GROQ_API_KEY` trên Render
+### Deploy và kiểm chứng
+- [ ] `[gate]` Lần deploy đầu tiên (migration `0001_initial` tự chạy trên Neon trống); kiểm tra `/api/health`
+- [ ] Import repo mẫu Atlas từ đầu tới cuối qua GitHub Actions; ôn thử một thẻ; restart dịch vụ; dữ liệu ôn tập vẫn còn
+- [ ] Import thử một repo public nổi tiếng cỡ vừa; ghi lại thời gian Actions và số từ trích xuất (phục vụ đánh giá giới hạn)
+- [ ] Thử Groq TTS/STT/LLM qua các bài đọc to, chép chính tả, viết; ghi độ trễ
+- [ ] Đo thời gian khởi động nguội sau khi app ngủ (3 lần); ghi số liệu cho ticket PWA
+- [ ] `[user]` Mở app trên điện thoại và Mac qua HTTPS + Basic Auth
+### Đồng bộ tài liệu
+- [ ] `docs/xac_minh.md` (bằng chứng có ngày, không ghi URL kèm mật khẩu), `docs/trien_khai_cloud.md`; cập nhật lộ trình
+- [ ] Chuyển các ticket đang chờ triển khai cloud sang `san_sang/` nếu không còn bị chặn bởi gì khác
 
 ## Bán kính ảnh hưởng
 - Tạo tài khoản dịch vụ cloud và các secret thực tế; nếu làm lộ `API_KEY`, `WORKSPACE_PASSWORD` hoặc GitHub token sẽ dẫn đến nguy cơ lộ dữ liệu học tập cá nhân hoặc người ngoài có thể kích hoạt runner Actions. Cách phục hồi: xoay vòng thu hồi key trên Render/GitHub, tiến hành deploy lại.

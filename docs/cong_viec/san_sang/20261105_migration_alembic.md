@@ -11,6 +11,8 @@ opened: 2026-11-05
 ## Ngữ cảnh
 Schema cơ sở dữ liệu hiện tại được khởi tạo bằng SQLAlchemy `create_all` (README đã lưu ý: "không dùng làm chiến lược nâng cấp schema"). Giai đoạn 2 của lộ trình sẽ thêm các cột dữ liệu mới (nghĩa tiếng Việt, cụm từ vựng). Một khi lịch sử học tập đã được lưu trữ trên Neon, việc thay đổi schema mà không có công cụ migration sẽ đồng nghĩa với việc phải chạy SQL thủ công hoặc đối mặt nguy cơ mất dữ liệu. Thực hiện việc này trước lần deploy đầu tiên giúp giữ rủi ro ở mức `routine`; sau khi đã deploy, mọi migration đều thuộc diện `irreversible`.
 
+Cập nhật 2026-11-06: làm **sau** [ticket bỏ ARQ/Redis](20261106_bo_che_do_arq_redis.md) (Giai đoạn 0). Schema hiện đã có `user_id` trên các bảng chính; revision cơ sở phải giữ nguyên để sẵn sàng cho đa người dùng (chủ dự án chốt: chuẩn bị schema, chưa làm đăng nhập). Hiện `init_db()` (`backend/app/db.py`) gọi `create_all` rồi seed user `local-user`; test (`backend/tests/conftest.py`) dùng `Base.metadata.drop_all` + lifespan.
+
 ## Tiêu chí chấp nhận
 - [ ] Lệnh `alembic upgrade head` khởi tạo schema hiện tại thành công trên cả SQLite trống và PostgreSQL trống.
 - [ ] Bản revision cơ sở khớp chính xác với `create_all` (autogenerate không sinh ra diff sai lệch).
@@ -20,17 +22,22 @@ Schema cơ sở dữ liệu hiện tại được khởi tạo bằng SQLAlchemy
 
 ## Kế hoạch
 ### Cài đặt ban đầu
-- [ ] Thêm `alembic` vào `backend/pyproject.toml` và sinh lại `backend/requirements.lock`
-- [ ] Khởi tạo thư mục `backend/alembic/` với `env.py` đọc `settings.database_url` và `db.Base.metadata`
-- [ ] Tạo revision cơ sở `0001_initial` từ các model hiện tại trong `backend/app/db.py`
+- [ ] Thêm `alembic` vào `backend/pyproject.toml`; sinh lại `backend/requirements.lock` và `backend/requirements.web` (bản web cần alembic vì API tự migrate khi khởi động)
+- [ ] Đặt `naming_convention` cho `Base.metadata` trong `backend/app/db.py` để tên constraint/index giống nhau trên SQLite và PostgreSQL (chưa có DB production nên đổi tên lúc này là an toàn)
+- [ ] Tạo `backend/alembic.ini` + `backend/alembic/env.py`: đọc `settings.database_url`, `target_metadata = Base.metadata`, `render_as_batch=True` khi dialect là SQLite (SQLite không hỗ trợ đủ `ALTER TABLE`), `compare_type=True`
+- [ ] Sinh revision `0001_initial` bằng autogenerate, đọc lại bằng tay (kiểu JSON, index, unique constraint, `ondelete`)
 ### Kết nối vào hệ thống
-- [ ] Thay thế lệnh `create_all` trong vòng đời API (`backend/app/main.py`) bằng lệnh nâng cấp lên head
-- [ ] Cập nhật tương tự cho `scripts/cloud_start.py` và dịch vụ `api` trong Compose
-- [ ] Cấu hình `backend/tests/conftest.py` khởi tạo DB test thông qua migration
-### Kiểm chứng và cập nhật tài liệu
-- [ ] Chạy autogenerate so với bản cơ sở → diff rỗng
-- [ ] Chạy pytest, typecheck; bảo đảm CI báo xanh (dẫn link run)
-- [ ] Đồng bộ tài liệu: mục "Chạy trực tiếp không cần Docker" trong README, ghi chú về migration trong kien_truc.md
+- [ ] `backend/app/db.py`: `init_db()` gọi `alembic.command.upgrade(cfg, "head")` thay cho `create_all`, giữ phần seed `local-user`; đường dẫn `alembic.ini` tính từ package, không phụ thuộc cwd
+- [ ] DB cục bộ cũ tạo bằng `create_all` (có bảng nhưng không có `alembic_version`): phát hiện trường hợp này, so schema với `0001_initial`; nếu khớp thì `stamp head`, nếu lệch thì dừng và in hướng dẫn rõ ràng (không tự xóa dữ liệu)
+- [ ] Kiểm tra `scripts/cloud_start.py`, `scripts/dev.py`, `Dockerfile.cloud`, `backend/Dockerfile` vẫn khởi động đúng (migration chạy trong lifespan); bảo đảm file `alembic/` được copy vào image
+- [ ] `backend/tests/conftest.py`: fixture tạo DB bằng migration (`downgrade base` + `upgrade head` hoặc file SQLite mới mỗi test) thay cho `drop_all`
+### Kiểm chứng
+- [ ] Test `backend/tests/test_migrations.py`: upgrade trên SQLite trống; autogenerate so với model → không có diff (`alembic check`)
+- [ ] CI (`.github/workflows/ci.yml`): thêm job dùng service container `postgres:17` chạy `alembic upgrade head` + `alembic check` (máy cá nhân không cần chạy Docker)
+- [ ] `pytest`, typecheck, CI xanh (dẫn link run)
+### Đồng bộ tài liệu
+- [ ] Tạo quy trình `docs/quy_trinh/tao_migration.md`: tạo revision, đọc lại, chạy thử trên SQLite và PostgreSQL CI, và **sau khi đã deploy**: `pg_dump` Neon trước, đánh dấu `[gate]`, áp dụng, kiểm tra, cách rollback
+- [ ] README mục "Chạy trực tiếp không cần Docker" (migration tự chạy; lệnh tạo revision); `docs/kien_truc.md` mục dữ liệu (bỏ ghi chú `create_all`); `docs/quy_tac/dieu_huong.md` (vị trí `backend/alembic/`)
 
 ## Nhật ký thực hiện
 

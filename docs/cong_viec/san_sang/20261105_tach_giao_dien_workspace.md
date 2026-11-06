@@ -11,7 +11,7 @@ opened: 2026-11-05
 ## Ngữ cảnh
 File `frontend/components/workspace.tsx` hiện đang gộp cả 6 trang (dashboard, từ vựng, repositories, ôn tập, bài tập, cài đặt) vào chung một client component duy nhất với 33 hooks `useState`; một số dòng dài vượt quá 2.000 ký tự (đo ngày 2026-11-05 bằng lệnh `awk 'length > 400'`). Mọi tính năng trong Giai đoạn 1–3 (phiên học hàng ngày, PWA, mô phỏng nói, luyện nghe) đều sẽ phải thêm màn hình tại đây. Tách nhỏ file này trước tiên sẽ giúp các thay đổi sau này dễ review hơn và cô lập phạm vi lỗi hồi quy (regression).
 
-Không có thay đổi nào về hành vi người dùng trong đợt tái cấu trúc này.
+Không có thay đổi nào về hành vi người dùng trong đợt tái cấu trúc này. Việc đổi ngôn ngữ mặc định sang tiếng Việt, dark mode và bố cục mobile (chủ dự án chốt 2026-11-06) thuộc ticket [hệ thống thiết kế giao diện](../cho_xu_ly/20261106_he_thong_thiet_ke_giao_dien.md), làm ngay sau ticket này.
 
 ## Tiêu chí chấp nhận
 - [ ] Mỗi trang là một component riêng nằm trong thư mục `frontend/components/pages/`, cùng các thành phần chia sẻ chung (hộp thoại import, drawer xem chi tiết từ, thông báo toast).
