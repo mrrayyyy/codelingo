@@ -17,7 +17,7 @@ Cập nhật 2026-11-06: làm **sau** [ticket bỏ ARQ/Redis](../hoan_thanh/2026
 - [x] Lệnh `alembic upgrade head` khởi tạo schema hiện tại thành công trên cả SQLite trống và PostgreSQL trống.
 - [x] Bản revision cơ sở khớp chính xác với `create_all` (autogenerate không sinh ra diff sai lệch).
 - [x] Quá trình khởi động API tự động chạy migrations (hoặc từ chối khởi động nếu schema lỗi thời) trên mọi chế độ job.
-- [ ] Toàn bộ bộ test chạy trên schema đã được migrate; CI báo xanh.
+- [x] Toàn bộ bộ test chạy trên schema đã được migrate; CI báo xanh ([run 42159839436](https://github.com/mrrayyyy/codelingo/actions/runs/42159839436): `test` và `migrations` success).
 - [x] README và kien_truc.md cập nhật hướng dẫn cách tạo và áp dụng migration mới.
 
 ## Kế hoạch
@@ -33,8 +33,8 @@ Cập nhật 2026-11-06: làm **sau** [ticket bỏ ARQ/Redis](../hoan_thanh/2026
 - [x] `backend/tests/conftest.py`: fixture tạo DB bằng migration (`downgrade base` + `upgrade head` hoặc file SQLite mới mỗi test) thay cho `drop_all`
 ### Kiểm chứng
 - [x] Test `backend/tests/test_migrations.py`: upgrade trên SQLite trống; autogenerate so với model → không có diff (`alembic check`)
-- [ ] CI (`.github/workflows/ci.yml`): thêm job dùng service container `postgres:17` chạy `alembic upgrade head` + `alembic check` (máy cá nhân không cần chạy Docker)
-- [ ] `pytest`, typecheck, CI xanh (dẫn link run)
+- [x] CI (`.github/workflows/ci.yml`): thêm job dùng service container `postgres:17` chạy `alembic upgrade head` + `alembic check` (máy cá nhân không cần chạy Docker)
+- [x] `pytest` → 61 passed, typecheck sạch, CI xanh: https://github.com/mrrayyyy/codelingo/actions/runs/42159839436
 ### Đồng bộ tài liệu
 - [x] Tạo quy trình `docs/quy_trinh/tao_migration.md`: tạo revision, đọc lại, chạy thử trên SQLite và PostgreSQL CI, và **sau khi đã deploy**: `pg_dump` Neon trước, đánh dấu `[gate]`, áp dụng, kiểm tra, cách rollback
 - [x] README mục "Chạy trực tiếp không cần Docker" (migration tự chạy; lệnh tạo revision); `docs/kien_truc.md` mục dữ liệu (bỏ ghi chú `create_all`); `docs/quy_tac/dieu_huong.md` (vị trí `backend/alembic/`)
@@ -48,6 +48,9 @@ Cập nhật 2026-11-06: làm **sau** [ticket bỏ ARQ/Redis](../hoan_thanh/2026
 - 2026-11-06: CLI `alembic -c backend/alembic.ini upgrade head` + `check` trên SQLite → "No new upgrade operations detected". Thêm job `migrations` trong `ci.yml` (service `postgres:17-alpine`, xác thực `trust`, upgrade → check → downgrade base → upgrade → check).
 - 2026-11-06: tài liệu: tạo `docs/quy_trinh/tao_migration.md`; cập nhật README (mục chạy không cần Docker, cây thư mục, bỏ "migration Alembic" khỏi phạm vi còn lại), `docs/kien_truc.md` (đoạn schema dưới ERD), `docs/quy_tac/dieu_huong.md`. Dockerfile không cần sửa vì cả hai image copy `backend/app` (gồm `migrations/`); `requirements.web` thêm `alembic`.
 
+- 2026-11-06: push `adba75e`, `f7819de`; CI xanh, job `migrations` chạy upgrade → check → downgrade → upgrade → check trên PostgreSQL 17 thành công (https://github.com/mrrayyyy/codelingo/actions/runs/42159839436). Đóng ticket.
+
 ## Sai lệch
 - Migration nằm trong `backend/app/migrations/` thay vì `backend/alembic/` như kế hoạch: thư mục này tự đi theo `COPY backend/app ./app` vào cả `Dockerfile.cloud` lẫn `backend/Dockerfile`, không phải sửa Dockerfile hay khai báo package data.
 - Thêm xử lý giới hạn phản chiếu UNIQUE của SQLite (ngoài kế hoạch), cần để nhận DB cũ đúng.
+- Tiếp nối ở ticket triển khai cloud: Neon khuyến nghị dùng kết nối trực tiếp cho migration, nên biến tùy chọn `MIGRATION_DATABASE_URL` được thêm ở ticket đó.
